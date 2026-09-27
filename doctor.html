@@ -184,18 +184,18 @@ const legL = makeLeg(-1), legR = makeLeg(1);
 
 // निळा शर्ट + टाय (फोटोप्रमाणे)
 bodyG.add(mesh(new THREE.CylinderGeometry(20, 24, 62, 20), M.shirt, 0, 70, 0));
-bodyG.add(mesh(new THREE.BoxGeometry(6, 10, 2.5), M.tie, 0, 102, 20));
+bodyG.add(mesh(new THREE.BoxGeometry(5.5, 10, 2.5), M.tie, 0, 102, 20));
 {
-  const tieBody = mesh(new THREE.BoxGeometry(7, 30, 2), M.tie, 0, 86, 22);
+  const tieBody = mesh(new THREE.BoxGeometry(5, 30, 2), M.tie, 0, 86, 22);
   tieBody.rotation.x = 0.06; bodyG.add(tieBody);
 }
 // उघडा पांढरा कोट
 {
   const coatMat = M.coat.clone(); coatMat.side = THREE.DoubleSide;
-  bodyG.add(mesh(new THREE.CylinderGeometry(28, 35, 76, 24, 1, true, 0.65, Math.PI*2 - 1.3), coatMat, 0, 74, 0));
+  bodyG.add(mesh(new THREE.CylinderGeometry(28, 35, 76, 24, 1, true, 0.52, Math.PI*2 - 1.04), coatMat, 0, 74, 0));
   for (const sx of [-1, 1]) {
-    const lapel = mesh(new THREE.BoxGeometry(8, 26, 2), M.coat, sx*16.5, 95, 21);
-    lapel.rotation.y = sx * -0.55; lapel.rotation.z = sx * 0.12; bodyG.add(lapel);
+    const lapel = mesh(new THREE.BoxGeometry(8, 26, 2), M.coat, sx*14, 95, 23);
+    lapel.rotation.y = sx * -0.45; lapel.rotation.z = sx * 0.12; bodyG.add(lapel);
   }
   const collarMat = M.coat.clone(); collarMat.side = THREE.DoubleSide;
   bodyG.add(mesh(new THREE.CylinderGeometry(12.5, 14, 8, 16, 1, true, Math.PI*0.7, Math.PI*1.6), collarMat, 0, 107, 0));
@@ -217,8 +217,8 @@ function makeArm(side) {
 }
 const armL = makeArm(-1), armR = makeArm(1);
 
-{ // मेडिकल बॅग — डाव्या हातात (फोटोप्रमाणे)
-  const bag = new THREE.Group(); bag.position.set(0, -46, 3); armL.add(bag);
+{ // मेडिकल बॅग — उजव्या हातात (फोटोप्रमाणे: त्याच्या डाव्या हातात)
+  const bag = new THREE.Group(); bag.position.set(0, -46, 3); armR.add(bag);
   bag.add(mesh(new THREE.BoxGeometry(46, 34, 17), M.bag, 0, -19, 0));
   bag.add(mesh(new THREE.BoxGeometry(46, 5, 17.5), M.bagD, 0, -4, 0));
   bag.add(mesh(new THREE.TorusGeometry(10, 2.4, 10, 28), M.red, 0, -19, 8.8));
@@ -254,7 +254,7 @@ const steth = new THREE.Group(); steth.position.set(0, 106, 4); bodyG.add(steth)
   dia.rotation.x = Math.PI/2; steth.add(dia);
 }
 
-const headG = new THREE.Group(); headG.position.set(0, 118, 0); bodyG.add(headG);
+const headG = new THREE.Group(); headG.position.set(0, 118, 0); headG.scale.setScalar(1.12); bodyG.add(headG);
 headG.add(mesh(new THREE.SphereGeometry(24, 36, 28), M.skin, 0, 16, 0));
 for (const sx of [-1, 1]) headG.add(mesh(new THREE.SphereGeometry(3.6, 12, 10), M.skinD, sx*23.5, 14, 0));
 { // तपकिरी केस — quiff (फोटोप्रमाणे)
@@ -264,10 +264,10 @@ for (const sx of [-1, 1]) headG.add(mesh(new THREE.SphereGeometry(3.6, 12, 10), 
     const side = mesh(new THREE.SphereGeometry(10, 14, 12), M.hair, sx*20, 26, 2);
     side.scale.set(0.7, 1, 0.9); headG.add(side);
   }
-  const tufts = [[-9, 42, 10, -0.35], [0, 44, 12, 0], [9, 42, 10, 0.35]];
+  const tufts = [[-10, 44, 7, -0.3], [-3.5, 46, 8, -0.28], [3.5, 46, 8, 0.28], [10, 44, 7, 0.3]];
   for (const [tx, ty, tz, rz] of tufts) {
     const tuft = mesh(new THREE.SphereGeometry(7, 14, 12), M.hair, tx, ty, tz);
-    tuft.scale.set(1, 1.7, 1); tuft.rotation.z = rz; headG.add(tuft);
+    tuft.scale.set(1, 2.0, 1.1); tuft.rotation.z = rz; tuft.rotation.x = -0.28; headG.add(tuft);
   }
   const back = mesh(new THREE.SphereGeometry(12, 14, 12), M.hair, 0, 30, -16);
   back.scale.set(1.4, 1, 0.8); headG.add(back);
@@ -285,13 +285,24 @@ for (const sx of [-1, 1]) {
   brow.rotation.z = sx * -0.08; eg.add(brow);
   eyeGroups.push({ eg, pupil, brow, sx, baseRZ: sx * -0.08, baseY: 9.5 });
 }
-{ // काळा चष्मा (फोटोप्रमाणे)
-  for (const sx of [-1, 1]) {
-    const frame = mesh(new THREE.TorusGeometry(7.2, 1.7, 10, 28), M.glass, sx*9.5, 19, 22.5);
-    frame.scale.x = 1.12; headG.add(frame);
-    headG.add(mesh(new THREE.BoxGeometry(1.8, 1.8, 20), M.glass, sx*17.5, 19, 13));
+{ // काळा चष्मा — rounded rectangle (फोटोप्रमाणे)
+  function rrShape(w, h, r) {
+    const s = new THREE.Shape(), x = -w/2, y = -h/2;
+    s.moveTo(x+r, y);
+    s.lineTo(x+w-r, y); s.quadraticCurveTo(x+w, y, x+w, y+r);
+    s.lineTo(x+w, y+h-r); s.quadraticCurveTo(x+w, y+h, x+w-r, y+h);
+    s.lineTo(x+r, y+h); s.quadraticCurveTo(x, y+h, x, y+h-r);
+    s.lineTo(x, y+r); s.quadraticCurveTo(x, y, x+r, y);
+    return s;
   }
-  headG.add(mesh(new THREE.BoxGeometry(6, 2, 2), M.glass, 0, 19.5, 22.8));
+  for (const sx of [-1, 1]) {
+    const lens = rrShape(18, 15, 4.5);
+    lens.holes.push(new THREE.Path(rrShape(14, 11, 3).getPoints(10)));
+    const frame = mesh(new THREE.ExtrudeGeometry(lens, { depth: 1.8, bevelEnabled: false }), M.glass, sx*9.8, 19, 21);
+    headG.add(frame);
+    headG.add(mesh(new THREE.BoxGeometry(1.8, 1.8, 20), M.glass, sx*18.5, 19, 12));
+  }
+  headG.add(mesh(new THREE.BoxGeometry(5.5, 2.2, 1.8), M.glass, 0, 20, 21.4));
 }
 { // दाढी + मिशा (फोटोप्रमाणे)
   const beard = mesh(new THREE.TorusGeometry(16, 5, 10, 26, Math.PI), M.hair, 0, 10, 10);
