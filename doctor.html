@@ -104,14 +104,14 @@
   </div>
 
   <div class="note">
-    <div><b>नवीन स्टंट!</b> 🧗 सुमारे १०व्या सेकंदाला डॉक्टर <b>टॅबच्या कडेवर हात ठेवून चढतो</b> आणि वरून <b>धावत पलीकडे जातो</b> 🏃 — मग उजव्या टोकावरून उडी मारून मागे लपतो!<br>
-    बाकी वेळ तो टॅबच्या मागेच डोकावतो 👀 आवडल्यास app मध्ये टाकतो 🩺</div>
+    <div><b>सुधारलेलं ॲनिमेशन</b> ✨ — सुमारे १०व्या सेकंदाला डॉक्टर <b>मागून येऊन टॅबच्या कडेवर हात ठेवतो</b> 🧗, वर चढतो, आणि कडेवरून <b>नैसर्गिक धावत</b> पलीकडे जातो 🏃 — मग उडी मारून लपतो!<br>
+    बघा आणि सांगा — आता नीट वाटतंय का? 🩺</div>
   </div>
 
 <script type="module">
 import * as THREE from 'three';
 
-const LOOP = 28;
+const LOOP = 30;
 const wrap = document.getElementById('cardWrap');
 const docLayer = document.getElementById('doc3d');
 
@@ -167,7 +167,6 @@ const mesh = (geo, mat, x=0, y=0, z=0) => {
 const doctor = new THREE.Group(); scene.add(doctor);
 const bodyG = new THREE.Group(); doctor.add(bodyG);
 
-// पाय — hip pivot सह (धावण्यासाठी)
 function makeLeg(side) {
   const g = new THREE.Group(); g.position.set(side*11, 36, 0);
   g.add(mesh(new THREE.CapsuleGeometry(7.5, 18, 6, 14), M.navy, 0, -13, 0));
@@ -178,7 +177,6 @@ function makeLeg(side) {
 }
 const legL = makeLeg(-1), legR = makeLeg(1);
 
-// कोट
 bodyG.add(mesh(new THREE.CylinderGeometry(27, 34, 74, 26), M.coat, 0, 74, 0));
 {
   const hem = mesh(new THREE.TorusGeometry(33.6, 1.6, 8, 30), M.coatS, 0, 38, 0);
@@ -209,7 +207,6 @@ function makeArm(side) {
 }
 const armL = makeArm(-1), armR = makeArm(1);
 
-// स्टेथोस्कोप
 const steth = new THREE.Group(); steth.position.set(0, 106, 4); bodyG.add(steth);
 {
   const loop = mesh(new THREE.TorusGeometry(15, 2.6, 10, 32, Math.PI*1.5), M.dark, 0, 2, 0);
@@ -236,7 +233,6 @@ const steth = new THREE.Group(); steth.position.set(0, 106, 4); bodyG.add(steth)
   dia.rotation.x = Math.PI/2; steth.add(dia);
 }
 
-// डोके
 const headG = new THREE.Group(); headG.position.set(0, 118, 0); bodyG.add(headG);
 headG.add(mesh(new THREE.SphereGeometry(24, 36, 28), M.skin, 0, 16, 0));
 for (const sx of [-1, 1]) headG.add(mesh(new THREE.SphereGeometry(3.6, 12, 10), M.skinD, sx*23.5, 14, 0));
@@ -318,24 +314,28 @@ function buildKeys() {
     P(7.4,  -8, sideY, { hry: 0.25, brow: 0.7, wide: 0.2 }),
     P(8.0,  -8, sideY),
     P(8.8,  70, midY),
-    P(9.8,  70, cardTop + 130, { z: 6, climb: 1, hrx: -0.3, brow: 0.4 }), // कडेवर हात ठेवून चढतो
-    P(10.6, 70, cardTop - 2, { z: 6 }),
-    P(11.2, 70, cardTop - 2, { z: 6, ry: 0.3, rz: -0.12, hrx: 0.08 }),
-    P(14.2, W-70, cardTop - 2, { z: 6, ry: 0.3, rz: -0.12, hrx: 0.08 }),  // धावतो!
-    P(14.8, W-58, cardTop + 14, { z: 6, ry: 0.3 }),
-    P(15.4, W+8, cardTop + 34, { z: 6, ry: 0.3 }),                        // टोकावरून उडी
-    P(16.0, W+8, midY, { z: 4 }),
-    P(16.8, CX, cardTop + cardH + 30, { z: 4 }),
-    P(17.6, 46, botY, { hrz: -0.2, hry: 0.3, brow: 0.4 }),
-    P(19.4, 46, botY, { hrz: -0.2, hry: -0.25, brow: 0.4 }),
-    P(20.2, CX, cardTop + cardH + 30, { z: 4 }),
-    P(21.0, W-46, botY, { hry: -0.3, brow: 0.7, wide: 0.2 }),
-    P(22.6, W-46, botY, { hry: -0.3, brow: 0.7, wide: 0.2 }),
-    P(23.4, CX, midY, { z: 4 }),
-    P(24.2, CX, topY),
-    P(25.4, CX, topY, { hry: 0.4 }),
-    P(26.6, CX, topY, { hry: -0.4 }),
-    P(28.0, CX, topY),
+    P(9.6,  70, midY),
+    P(10.4, 70, cardTop + 116, { climb: 1, hrx: -0.3, brow: 0.7, mouth: 2 }), // हात कडेवर — मागून चढतो
+    P(11.2, 70, cardTop + 50,  { climb: 0.55, hrx: -0.15, brow: 0.5, mouth: 2 }), // ओढून वर
+    P(11.8, 70, cardTop - 2,   { brow: 0.5, wide: 0.15, mouth: 0 }),  // कडेवर उभा!
+    P(12.4, 70, cardTop - 2,   { z: 6, ry: 0.25, brow: 0.6, wide: 0.2 }),
+    P(13.0, 70, cardTop - 2,   { z: 6, ry: 0.3, rz: -0.14, hrx: 0.06 }),
+    P(16.0, W-70, cardTop - 2, { z: 6, ry: 0.3, rz: -0.14, hrx: 0.06 }), // धावतो
+    P(16.5, W-62, cardTop + 10,{ z: 6, ry: 0.3, hrx: 0.35 }),  // थांबतो, खाली बघतो
+    P(17.0, W-58, cardTop + 22,{ z: 6, rx: 0.18 }),           // वाकतो
+    P(17.5, W+16, cardTop + 40,{ z: 6 }),                     // उडी
+    P(18.1, W+16, midY,        { z: 4 }),                     // मागे
+    P(18.8, CX, cardTop + cardH + 30),
+    P(19.6, 46, botY, { hrz: -0.2, hry: 0.3, brow: 0.4 }),
+    P(21.4, 46, botY, { hrz: -0.2, hry: -0.25, brow: 0.4 }),
+    P(22.2, CX, cardTop + cardH + 30),
+    P(23.0, W-46, botY, { hry: -0.3, brow: 0.7, wide: 0.2 }),
+    P(24.6, W-46, botY, { hry: -0.3, brow: 0.7, wide: 0.2 }),
+    P(25.4, CX, midY),
+    P(26.2, CX, topY),
+    P(27.4, CX, topY, { hry: 0.4 }),
+    P(28.6, CX, topY, { hry: -0.4 }),
+    P(30.0, CX, topY),
   ];
 }
 let KEYS = [];
@@ -372,11 +372,21 @@ function tick() {
   prevX = P.x;
   const wob = Math.min(Math.abs(vx)/260, 1);
 
-  const runEnv = bump(t, 11.0, 11.4, 13.8, 14.2);   // धावणे
-  const tuckEnv = bump(t, 14.7, 15.0, 15.3, 15.6);  // उडीत गुडघे
+  const runEnv   = bump(t, 12.8, 13.2, 15.6, 16.0);
+  const tuckEnv  = bump(t, 16.9, 17.1, 17.4, 17.7);
   const climbEnv = P.climb;
+  const stride = Math.sin(el*13);
 
-  const bobY = wob*4*Math.abs(Math.sin(el*10)) + runEnv*Math.abs(Math.sin(el*15))*7;
+  // धावताना मध्येच प्रेक्षकाकडे एक नजर
+  let hry = P.hry;
+  const glance = bump(t, 14.0, 14.2, 14.6, 14.8);
+  hry += glance * 0.45;
+
+  // "ta-da" छोटी उडी
+  let hopY = 0;
+  if (t > 11.9 && t < 12.5) hopY = -Math.sin((t-11.9)/0.6*Math.PI)*6;
+
+  const bobY = wob*4*Math.abs(Math.sin(el*10)) + runEnv*Math.abs(stride)*5 + hopY;
   doctor.position.set(P.x, Met.H - P.y + bobY, 0);
   doctor.scale.setScalar(P.s * 0.92);
   doctor.rotation.set(P.rx, P.ry, P.rz + wob*0.05*Math.sin(el*10));
@@ -384,16 +394,16 @@ function tick() {
 
   bodyG.scale.y = 1 + 0.012*Math.sin(el*2*Math.PI/2.6);
   bodyG.position.y = 1.5*Math.sin(el*2*Math.PI/2.6 + 0.6);
-  headG.rotation.set(P.hrx, P.hry, P.hrz);
+  headG.rotation.set(P.hrx, hry, P.hrz);
 
   // डोळे
   const bp = el % 4.2, blinkY = bp < 0.13 ? 0.12 : 1;
-  const es = 1 + P.wide*0.4;
+  const es = 1 + (P.wide + glance*0.25)*0.4;
   for (const e of eyeGroups) {
     e.eg.scale.set(es, es*blinkY, 1);
-    e.pupil.position.x = THREE.MathUtils.clamp(P.hry*9, -3, 3);
+    e.pupil.position.x = THREE.MathUtils.clamp(hry*9, -3, 3);
     e.pupil.position.y = THREE.MathUtils.clamp(-P.hrx*9, -2.5, 2.5);
-    e.brow.position.y = e.baseY + P.brow*3;
+    e.brow.position.y = e.baseY + (P.brow + glance*0.3)*3;
     e.brow.rotation.z = e.baseRZ + e.sx * P.tilt * -1;
   }
   // तोंड
@@ -402,26 +412,16 @@ function tick() {
   mouths.forEach((m, i) => { m.visible = i === mi; });
   mouths[mi].scale.setScalar(1 + 0.35*Math.exp(-(el-mouthPopT)*6));
 
-  // पाय — धावणे / उडी
-  const stride = Math.sin(el*15);
-  legL.rotation.x = runEnv * stride * 0.85 - tuckEnv * 1.15;
-  legR.rotation.x = runEnv * -stride * 0.85 - tuckEnv * 1.15;
+  // पाय — सगळे envelope बेरीज (कोणताही धक्का नाही)
+  legL.rotation.x = runEnv*(stride*0.6) - tuckEnv*1.1;
+  legR.rotation.x = runEnv*(-stride*0.6) - tuckEnv*1.1;
 
-  // हात — चढणे / धावणे / हलवणे
-  const wL = bump(t, 6.2, 6.5, 7.1, 7.4), wR = bump(t, 21.2, 21.5, 22.1, 22.4);
-  if (climbEnv > 0.01) {
-    armL.rotation.x = armR.rotation.x = -2.5 * climbEnv;
-    armL.rotation.z = -0.35 * climbEnv; armR.rotation.z = 0.35 * climbEnv;
-  } else if (runEnv > 0.01) {
-    armL.rotation.x = runEnv * -stride * 0.9;
-    armR.rotation.x = runEnv * stride * 0.9;
-    armL.rotation.z = -0.15; armR.rotation.z = 0.15;
-  } else {
-    armL.rotation.z = wL > 0.01 ? -wL*(2.2 + Math.sin(el*13)*0.45) : armL.rotation.z*0.9;
-    armR.rotation.z = wR > 0.01 ?  wR*(2.2 + Math.sin(el*13)*0.45) : armR.rotation.z*0.9;
-    armL.rotation.x = 0.06*Math.sin(el*1.7) - tuckEnv*0.8;
-    armR.rotation.x = 0.06*Math.sin(el*1.7 + 1) - tuckEnv*0.8;
-  }
+  // हात — बेरीज, नैसर्गिक
+  const wL = bump(t, 6.2, 6.5, 7.1, 7.4), wR = bump(t, 23.2, 23.5, 24.1, 24.4);
+  armL.rotation.x = 0.06*Math.sin(el*1.7) + runEnv*(-stride*0.55) + climbEnv*(-2.5) - tuckEnv*0.8;
+  armR.rotation.x = 0.06*Math.sin(el*1.7+1) + runEnv*(stride*0.55) + climbEnv*(-2.5) - tuckEnv*0.8;
+  armL.rotation.z = -wL*(2.2 + Math.sin(el*13)*0.45) + climbEnv*(-0.35) + runEnv*(-0.12);
+  armR.rotation.z =  wR*(2.2 + Math.sin(el*13)*0.45) + climbEnv*(0.35) + runEnv*(0.12);
 
   steth.rotation.x = Math.sin(el*2*Math.PI/3.4)*0.07;
   steth.rotation.z = Math.cos(el*2*Math.PI/3.4)*0.05;
