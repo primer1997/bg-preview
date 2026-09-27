@@ -104,8 +104,8 @@
   </div>
 
   <div class="note">
-    <div><b>3D डॉक्टर — फक्त टॅबच्या मागे</b> 🩺 — तो नेहमी लॉगिन टॅबच्या <b>मागेच</b> राहतो: वरून डोकावतो 👀, डाव्या-उजव्या कडून वाकून बघतो, आश्चर्यचकित होतो 😮, खालच्या कोपऱ्यातून हात हलवतो 👋<br>
-    पुढं किंवा वर येत नाही — स्वच्छ, नीट ॲनिमेशन. आवडल्यास app च्या लॉगिन स्क्रीनवर टाकतो!</div>
+    <div><b>फोटोप्रमाणे नवीन लूक!</b> 📸 — काळा <b>चष्मा</b> 🤓, <b>दाढी-मिशी</b> 🧔, तपकिरी केस, निळा शर्ट-टाय, उघडा पांढरा कोट, निळा स्टेथोस्कोप — आणि हातात <b>red-cross वाली मेडिकल बॅग</b> 💼<br>
+    तो नेहमी टॅबच्या <b>मागेच</b> डोकावतो 👀 आवडल्यास app मध्ये टाकतो!</div>
   </div>
 
 <script type="module">
@@ -142,22 +142,27 @@ rim.position.set(-160, 120, -160); scene.add(rim);
 const M = {
   skin:  new THREE.MeshStandardMaterial({ color: 0xf6c89f, roughness: 0.5 }),
   skinD: new THREE.MeshStandardMaterial({ color: 0xe0a068, roughness: 0.55 }),
+  hair:  new THREE.MeshStandardMaterial({ color: 0x6b4226, roughness: 0.65 }),
+  glass: new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.3 }),
   coat:  new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.48 }),
   coatS: new THREE.MeshStandardMaterial({ color: 0xd7e4f1, roughness: 0.55 }),
-  teal:  new THREE.MeshStandardMaterial({ color: 0x0d9488, roughness: 0.42 }),
-  amber: new THREE.MeshStandardMaterial({ color: 0xf59e0b, roughness: 0.42 }),
-  dark:  new THREE.MeshStandardMaterial({ color: 0x12324f, roughness: 0.5 }),
-  navy:  new THREE.MeshStandardMaterial({ color: 0x1e3a5f, roughness: 0.6 }),
-  shoe:  new THREE.MeshStandardMaterial({ color: 0x10233c, roughness: 0.35 }),
-  sole:  new THREE.MeshStandardMaterial({ color: 0xe8eef4, roughness: 0.6 }),
+  shirt: new THREE.MeshStandardMaterial({ color: 0x2f7fc4, roughness: 0.55 }),
+  tie:   new THREE.MeshStandardMaterial({ color: 0x1e4fa3, roughness: 0.5 }),
+  pants: new THREE.MeshStandardMaterial({ color: 0x2f5fb3, roughness: 0.6 }),
+  steth: new THREE.MeshStandardMaterial({ color: 0x2563eb, roughness: 0.45 }),
+  shoeW: new THREE.MeshStandardMaterial({ color: 0xeef0f2, roughness: 0.4 }),
+  sole:  new THREE.MeshStandardMaterial({ color: 0xd5dae0, roughness: 0.6 }),
   white: new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.22 }),
   pupil: new THREE.MeshStandardMaterial({ color: 0x1b2a3a, roughness: 0.18 }),
   shine: new THREE.MeshBasicMaterial({ color: 0xffffff }),
   brown: new THREE.MeshStandardMaterial({ color: 0x7a4f24, roughness: 0.6 }),
-  mouth: new THREE.MeshStandardMaterial({ color: 0x8a4b28, roughness: 0.6 }),
-  mouthD:new THREE.MeshStandardMaterial({ color: 0x5b3a24, roughness: 0.7 }),
+  mouthD:new THREE.MeshStandardMaterial({ color: 0x5b2a1e, roughness: 0.7 }),
+  tongue:new THREE.MeshStandardMaterial({ color: 0xe08080, roughness: 0.6 }),
   blush: new THREE.MeshStandardMaterial({ color: 0xf0a080, roughness: 0.7, transparent: true, opacity: 0.5 }),
   metal: new THREE.MeshStandardMaterial({ color: 0xb8c4d0, roughness: 0.25, metalness: 0.8 }),
+  bag:   new THREE.MeshStandardMaterial({ color: 0xe8edf2, roughness: 0.5 }),
+  bagD:  new THREE.MeshStandardMaterial({ color: 0xd4dbe3, roughness: 0.55 }),
+  red:   new THREE.MeshStandardMaterial({ color: 0xdc2626, roughness: 0.45 }),
 };
 const mesh = (geo, mat, x=0, y=0, z=0) => {
   const m = new THREE.Mesh(geo, mat); m.position.set(x, y, z); m.castShadow = true; return m;
@@ -169,37 +174,42 @@ const bodyG = new THREE.Group(); doctor.add(bodyG);
 
 function makeLeg(side) {
   const g = new THREE.Group(); g.position.set(side*11, 36, 0);
-  g.add(mesh(new THREE.CapsuleGeometry(7.5, 18, 6, 14), M.navy, 0, -13, 0));
-  const shoe = mesh(new THREE.SphereGeometry(9, 18, 14), M.shoe, 0, -30, 4);
+  g.add(mesh(new THREE.CapsuleGeometry(7.5, 18, 6, 14), M.pants, 0, -13, 0));
+  const shoe = mesh(new THREE.SphereGeometry(9, 18, 14), M.shoeW, 0, -30, 4);
   shoe.scale.set(1.05, 0.62, 1.45); g.add(shoe);
   g.add(mesh(new THREE.BoxGeometry(17, 3, 25), M.sole, 0, -34, 4));
   bodyG.add(g); return g;
 }
 const legL = makeLeg(-1), legR = makeLeg(1);
 
-bodyG.add(mesh(new THREE.CylinderGeometry(27, 34, 74, 26), M.coat, 0, 74, 0));
+// निळा शर्ट + टाय (फोटोप्रमाणे)
+bodyG.add(mesh(new THREE.CylinderGeometry(20, 24, 62, 20), M.shirt, 0, 70, 0));
+bodyG.add(mesh(new THREE.BoxGeometry(6, 10, 2.5), M.tie, 0, 102, 20));
 {
-  const hem = mesh(new THREE.TorusGeometry(33.6, 1.6, 8, 30), M.coatS, 0, 38, 0);
-  hem.rotation.x = Math.PI/2; bodyG.add(hem);
+  const tieBody = mesh(new THREE.BoxGeometry(7, 30, 2), M.tie, 0, 86, 22);
+  tieBody.rotation.x = 0.06; bodyG.add(tieBody);
+}
+// उघडा पांढरा कोट
+{
+  const coatMat = M.coat.clone(); coatMat.side = THREE.DoubleSide;
+  bodyG.add(mesh(new THREE.CylinderGeometry(28, 35, 76, 24, 1, true, 0.65, Math.PI*2 - 1.3), coatMat, 0, 74, 0));
   for (const sx of [-1, 1]) {
-    const lapel = mesh(new THREE.BoxGeometry(9, 26, 2.2), M.coatS, sx*8.5, 96, 25);
-    lapel.rotation.z = sx * -0.38; lapel.rotation.x = -0.12; bodyG.add(lapel);
+    const lapel = mesh(new THREE.BoxGeometry(8, 26, 2), M.coat, sx*16.5, 95, 21);
+    lapel.rotation.y = sx * -0.55; lapel.rotation.z = sx * 0.12; bodyG.add(lapel);
   }
-  bodyG.add(mesh(new THREE.CylinderGeometry(13, 15.5, 9, 18), M.coatS, 0, 106, -1));
-  const btnZ = [28.2, 29.3, 30.4], btnY = [88, 76, 64];
-  btnY.forEach((y, i) => bodyG.add(mesh(new THREE.SphereGeometry(2.3, 12, 10), M.teal, 0, y, btnZ[i])));
-  const pocket = mesh(new THREE.BoxGeometry(16, 12, 3), M.coatS, -17, 78, 25.5);
-  pocket.rotation.y = 0.28; bodyG.add(pocket);
-  bodyG.add(mesh(new THREE.CylinderGeometry(1.6, 1.6, 11, 10), M.teal, -19.5, 88, 26.5));
-  bodyG.add(mesh(new THREE.CylinderGeometry(1.6, 1.6, 11, 10), M.amber, -14.5, 88, 27));
-  bodyG.add(mesh(new THREE.BoxGeometry(10, 16, 2.5), M.teal, 0, 100, 25));
+  const collarMat = M.coat.clone(); collarMat.side = THREE.DoubleSide;
+  bodyG.add(mesh(new THREE.CylinderGeometry(12.5, 14, 8, 16, 1, true, Math.PI*0.7, Math.PI*1.6), collarMat, 0, 107, 0));
+  const pocket = mesh(new THREE.BoxGeometry(15, 11, 2.5), M.coat, -19, 76, 20);
+  pocket.rotation.y = 0.5; bodyG.add(pocket);
+  const pen = mesh(new THREE.CylinderGeometry(1.5, 1.5, 10, 8), M.steth, -21, 84, 21);
+  pen.rotation.z = 0.15; bodyG.add(pen);
 }
 bodyG.add(mesh(new THREE.CylinderGeometry(8, 8, 12, 16), M.skin, 0, 110, 0));
 
 function makeArm(side) {
   const g = new THREE.Group(); g.position.set(side*31, 102, 0);
   g.add(mesh(new THREE.CapsuleGeometry(7, 28, 6, 14), M.coat, 0, -20, 0));
-  g.add(mesh(new THREE.CylinderGeometry(7.6, 7.6, 6, 14), M.teal, 0, -37, 0));
+  g.add(mesh(new THREE.CylinderGeometry(7.6, 7.6, 6, 14), M.shirt, 0, -37, 0));
   g.add(mesh(new THREE.SphereGeometry(7.2, 18, 14), M.skin, 0, -44, 0));
   const thumb = mesh(new THREE.CapsuleGeometry(2.2, 4, 4, 8), M.skin, side*5.5, -43, 3);
   thumb.rotation.z = side * 0.5; g.add(thumb);
@@ -207,47 +217,60 @@ function makeArm(side) {
 }
 const armL = makeArm(-1), armR = makeArm(1);
 
+{ // मेडिकल बॅग — डाव्या हातात (फोटोप्रमाणे)
+  const bag = new THREE.Group(); bag.position.set(0, -46, 3); armL.add(bag);
+  bag.add(mesh(new THREE.BoxGeometry(46, 34, 17), M.bag, 0, -19, 0));
+  bag.add(mesh(new THREE.BoxGeometry(46, 5, 17.5), M.bagD, 0, -4, 0));
+  bag.add(mesh(new THREE.TorusGeometry(10, 2.4, 10, 28), M.red, 0, -19, 8.8));
+  bag.add(mesh(new THREE.BoxGeometry(13, 4.6, 2), M.red, 0, -19, 9));
+  bag.add(mesh(new THREE.BoxGeometry(4.6, 13, 2), M.red, 0, -19, 9));
+  bag.add(mesh(new THREE.TorusGeometry(8, 2, 8, 18, Math.PI), M.metal, 0, -1, 0));
+  for (const sx of [-1, 1]) bag.add(mesh(new THREE.BoxGeometry(6, 4, 3), M.metal, sx*14, -3, 0));
+}
+
 const steth = new THREE.Group(); steth.position.set(0, 106, 4); bodyG.add(steth);
 {
-  const loop = mesh(new THREE.TorusGeometry(15, 2.6, 10, 32, Math.PI*1.5), M.dark, 0, 2, 0);
+  const loop = mesh(new THREE.TorusGeometry(15, 2.6, 10, 32, Math.PI*1.5), M.steth, 0, 2, 0);
   loop.rotation.set(1.35, 0, 2.35); steth.add(loop);
   for (const sx of [-1, 1]) {
     const curve = new THREE.CatmullRomCurve3([
       new THREE.Vector3(sx*10, 4, 2), new THREE.Vector3(sx*16, 16, -2), new THREE.Vector3(sx*19, 26, -6),
     ]);
-    steth.add(mesh(new THREE.TubeGeometry(curve, 16, 2, 8), M.dark));
+    steth.add(mesh(new THREE.TubeGeometry(curve, 16, 2, 8), M.steth));
     steth.add(mesh(new THREE.SphereGeometry(2.6, 10, 8), M.metal, sx*19, 27, -6.5));
   }
   for (const sx of [-1, 1]) {
     const curve = new THREE.CatmullRomCurve3([
       new THREE.Vector3(sx*9, 0, 6), new THREE.Vector3(sx*12, -18, 14), new THREE.Vector3(sx*6, -32, 20),
     ]);
-    steth.add(mesh(new THREE.TubeGeometry(curve, 24, 2.1, 8), M.dark));
+    steth.add(mesh(new THREE.TubeGeometry(curve, 24, 2.1, 8), M.steth));
   }
-  steth.add(mesh(new THREE.SphereGeometry(3, 10, 8), M.dark, 0, -30, 19));
-  const chest = mesh(new THREE.CylinderGeometry(7, 7, 4.5, 20), M.teal, 0, -38, 21);
+  steth.add(mesh(new THREE.SphereGeometry(3, 10, 8), M.steth, 0, -30, 19));
+  const chest = mesh(new THREE.CylinderGeometry(7, 7, 4.5, 20), M.steth, 9, -36, 20);
   chest.rotation.x = Math.PI/2; steth.add(chest);
-  steth.add(mesh(new THREE.TorusGeometry(7, 1.2, 8, 24), M.metal, 0, -38, 23.4));
+  steth.add(mesh(new THREE.TorusGeometry(7, 1.2, 8, 24), M.metal, 9, -36, 22.4));
   const dia = mesh(new THREE.CylinderGeometry(5.4, 5.4, 1, 18),
-    new THREE.MeshStandardMaterial({ color: 0xdff7f2, roughness: 0.3 }), 0, -38, 23.8);
+    new THREE.MeshStandardMaterial({ color: 0xdff7f2, roughness: 0.3 }), 9, -36, 22.8);
   dia.rotation.x = Math.PI/2; steth.add(dia);
 }
 
 const headG = new THREE.Group(); headG.position.set(0, 118, 0); bodyG.add(headG);
 headG.add(mesh(new THREE.SphereGeometry(24, 36, 28), M.skin, 0, 16, 0));
 for (const sx of [-1, 1]) headG.add(mesh(new THREE.SphereGeometry(3.6, 12, 10), M.skinD, sx*23.5, 14, 0));
-{
-  const dome = mesh(new THREE.SphereGeometry(24.6, 32, 16, 0, Math.PI*2, 0, Math.PI*0.55), M.coat, 0, 20, 0);
-  dome.scale.y = 0.82; headG.add(dome);
-  for (const rz of [-0.55, 0.55]) {
-    const fold = mesh(new THREE.TorusGeometry(17, 1.1, 8, 20, 1.1), M.coatS, 0, 33, 5);
-    fold.rotation.set(1.15, 0, rz + Math.PI/2 - 0.55); headG.add(fold);
+{ // तपकिरी केस — quiff (फोटोप्रमाणे)
+  const base = mesh(new THREE.SphereGeometry(25, 28, 20), M.hair, 0, 26, -3);
+  base.scale.set(1, 0.72, 1); headG.add(base);
+  for (const sx of [-1, 1]) {
+    const side = mesh(new THREE.SphereGeometry(10, 14, 12), M.hair, sx*20, 26, 2);
+    side.scale.set(0.7, 1, 0.9); headG.add(side);
   }
-  const band = mesh(new THREE.TorusGeometry(22.8, 2.8, 10, 32), M.teal, 0, 22.5, 0);
-  band.rotation.x = Math.PI/2; headG.add(band);
-  headG.add(mesh(new THREE.BoxGeometry(3.4, 10, 2), M.teal, 0, 30, 21));
-  const cb = mesh(new THREE.BoxGeometry(10, 3.4, 2), M.teal, 0, 30, 21);
-  cb.rotation.x = -0.25; headG.add(cb);
+  const tufts = [[-9, 42, 10, -0.35], [0, 44, 12, 0], [9, 42, 10, 0.35]];
+  for (const [tx, ty, tz, rz] of tufts) {
+    const tuft = mesh(new THREE.SphereGeometry(7, 14, 12), M.hair, tx, ty, tz);
+    tuft.scale.set(1, 1.7, 1); tuft.rotation.z = rz; headG.add(tuft);
+  }
+  const back = mesh(new THREE.SphereGeometry(12, 14, 12), M.hair, 0, 30, -16);
+  back.scale.set(1.4, 1, 0.8); headG.add(back);
 }
 headG.add(mesh(new THREE.SphereGeometry(3.4, 14, 12), M.skinD, 0, 12, 23.4));
 const eyeGroups = [];
@@ -262,13 +285,36 @@ for (const sx of [-1, 1]) {
   brow.rotation.z = sx * -0.08; eg.add(brow);
   eyeGroups.push({ eg, pupil, brow, sx, baseRZ: sx * -0.08, baseY: 9.5 });
 }
-const mouthSmile = mesh(new THREE.TorusGeometry(7.5, 1.7, 8, 20, Math.PI), M.mouth, 0, 4.5, 21);
-mouthSmile.rotation.z = Math.PI; mouthSmile.rotation.x = -0.15; headG.add(mouthSmile);
-const mouthO = mesh(new THREE.TorusGeometry(3.8, 1.9, 10, 20), M.mouthD, 0, 4.5, 21);
+{ // काळा चष्मा (फोटोप्रमाणे)
+  for (const sx of [-1, 1]) {
+    const frame = mesh(new THREE.TorusGeometry(7.2, 1.7, 10, 28), M.glass, sx*9.5, 19, 22.5);
+    frame.scale.x = 1.12; headG.add(frame);
+    headG.add(mesh(new THREE.BoxGeometry(1.8, 1.8, 20), M.glass, sx*17.5, 19, 13));
+  }
+  headG.add(mesh(new THREE.BoxGeometry(6, 2, 2), M.glass, 0, 19.5, 22.8));
+}
+{ // दाढी + मिशा (फोटोप्रमाणे)
+  const beard = mesh(new THREE.TorusGeometry(16, 5, 10, 26, Math.PI), M.hair, 0, 10, 10);
+  beard.rotation.z = Math.PI; beard.rotation.x = -0.15; headG.add(beard);
+  for (const sx of [-1, 1]) {
+    const mo = mesh(new THREE.CapsuleGeometry(2.2, 5, 4, 8), M.hair, sx*4.5, 8.5, 22);
+    mo.rotation.z = Math.PI/2 + sx*0.25; headG.add(mo);
+  }
+  const chin = mesh(new THREE.SphereGeometry(5, 12, 10), M.hair, 0, -3, 19);
+  chin.scale.set(1.4, 1, 0.8); headG.add(chin);
+}
+// मोठं हसू — दातांसह (फोटोप्रमाणे)
+const mouthOpen = new THREE.Group(); mouthOpen.position.set(0, 3, 21); headG.add(mouthOpen);
+{
+  const inner = mesh(new THREE.SphereGeometry(7, 18, 14), M.mouthD, 0, 0, 0);
+  inner.scale.set(1.25, 0.95, 0.55); mouthOpen.add(inner);
+  mouthOpen.add(mesh(new THREE.BoxGeometry(11, 3.6, 2), M.white, 0, 3.4, 1.2));
+  const tongue = mesh(new THREE.SphereGeometry(4, 14, 12), M.tongue, 0, -2.5, 1.5);
+  tongue.scale.set(1.2, 0.55, 0.8); mouthOpen.add(tongue);
+}
+const mouthO = mesh(new THREE.TorusGeometry(3.8, 1.9, 10, 20), M.mouthD, 0, 3, 21);
 mouthO.visible = false; headG.add(mouthO);
-const mouthFlat = mesh(new THREE.BoxGeometry(12, 2.2, 1.6), M.mouth, 0, 4.5, 21);
-mouthFlat.visible = false; headG.add(mouthFlat);
-const mouths = [mouthSmile, mouthO, mouthFlat];
+const mouths = [mouthOpen, mouthO];
 let lastMouth = 0, mouthPopT = -10;
 for (const sx of [-1, 1]) {
   const b = mesh(new THREE.SphereGeometry(3, 12, 10), M.blush, sx*14, 10, 18.5);
