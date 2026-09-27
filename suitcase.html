@@ -104,15 +104,14 @@
   </div>
 
   <div class="note">
-    <div><b>नवीन आयडिया — सुटकेस इंट्रो!</b> 💼<br>
-    आधी फक्त <b>सुटकेस</b> दिसते → ती <b>उघडते</b> ✨ → तिच्यातून <b>लॉगिन टॅब्स वर येतात</b> ⬆️<br>
-    मग डॉक्टर नेहमीप्रमाणे टॅबच्या <b>मागेच</b> डोकावतो 👀 आवडल्यास app मध्ये टाकतो!</div>
+    <div><b>नवीन आयडिया — आरोग्य विभाग सुटकेस!</b> 💼<br>
+    आधी फक्त <b>आरोग्य विभागाची सुटकेस</b> दिसते → ती <b>उघडते</b> ✨ → तिच्यातून <b>लॉगिन टॅब्स वर येतात</b> ⬆️<br>
+    मग सुटकेस बंद होऊन कार्डमागे शांत बसते. आवडल्यास app मध्ये टाकतो!</div>
   </div>
 
 <script type="module">
 import * as THREE from 'three';
 
-const LOOP = 24;
 const wrap = document.getElementById('cardWrap');
 const loginCardEl = document.getElementById('loginCard');
 const logoEl = document.querySelector('.logo');
@@ -142,226 +141,47 @@ fill.position.set(-120, 60, 220); scene.add(fill);
 const rim = new THREE.DirectionalLight(0x8fd0ff, 0.7);
 rim.position.set(-160, 120, -160); scene.add(rim);
 
-const M = {
-  skin:  new THREE.MeshStandardMaterial({ color: 0xf6c89f, roughness: 0.5 }),
-  skinD: new THREE.MeshStandardMaterial({ color: 0xe0a068, roughness: 0.55 }),
-  hair:  new THREE.MeshStandardMaterial({ color: 0x6b4226, roughness: 0.65 }),
-  glass: new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.3 }),
-  coat:  new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.48 }),
-  coatS: new THREE.MeshStandardMaterial({ color: 0xd7e4f1, roughness: 0.55 }),
-  shirt: new THREE.MeshStandardMaterial({ color: 0x2f7fc4, roughness: 0.55 }),
-  tie:   new THREE.MeshStandardMaterial({ color: 0x1e4fa3, roughness: 0.5 }),
-  pants: new THREE.MeshStandardMaterial({ color: 0x2f5fb3, roughness: 0.6 }),
-  steth: new THREE.MeshStandardMaterial({ color: 0x2563eb, roughness: 0.45 }),
-  shoeW: new THREE.MeshStandardMaterial({ color: 0xeef0f2, roughness: 0.4 }),
-  sole:  new THREE.MeshStandardMaterial({ color: 0xd5dae0, roughness: 0.6 }),
-  white: new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.22 }),
-  pupil: new THREE.MeshStandardMaterial({ color: 0x1b2a3a, roughness: 0.18 }),
-  shine: new THREE.MeshBasicMaterial({ color: 0xffffff }),
-  brown: new THREE.MeshStandardMaterial({ color: 0x7a4f24, roughness: 0.6 }),
-  mouthD:new THREE.MeshStandardMaterial({ color: 0x5b2a1e, roughness: 0.7 }),
-  tongue:new THREE.MeshStandardMaterial({ color: 0xe08080, roughness: 0.6 }),
-  blush: new THREE.MeshStandardMaterial({ color: 0xf0a080, roughness: 0.7, transparent: true, opacity: 0.5 }),
-  metal: new THREE.MeshStandardMaterial({ color: 0xb8c4d0, roughness: 0.25, metalness: 0.8 }),
-  bag:   new THREE.MeshStandardMaterial({ color: 0xe8edf2, roughness: 0.5 }),
-  bagD:  new THREE.MeshStandardMaterial({ color: 0xd4dbe3, roughness: 0.55 }),
-  red:   new THREE.MeshStandardMaterial({ color: 0xdc2626, roughness: 0.45 }),
-};
 const mesh = (geo, mat, x=0, y=0, z=0) => {
   const m = new THREE.Mesh(geo, mat); m.position.set(x, y, z); m.castShadow = true; return m;
 };
 
-/* ================= डॉक्टर मॉडेल ================= */
-const doctor = new THREE.Group(); scene.add(doctor);
-const bodyG = new THREE.Group(); doctor.add(bodyG);
-
-function makeLeg(side) {
-  const g = new THREE.Group(); g.position.set(side*11, 36, 0);
-  g.add(mesh(new THREE.CapsuleGeometry(7.5, 18, 6, 14), M.pants, 0, -13, 0));
-  const shoe = mesh(new THREE.SphereGeometry(9, 18, 14), M.shoeW, 0, -30, 4);
-  shoe.scale.set(1.05, 0.62, 1.45); g.add(shoe);
-  g.add(mesh(new THREE.BoxGeometry(17, 3, 25), M.sole, 0, -34, 4));
-  bodyG.add(g); return g;
-}
-const legL = makeLeg(-1), legR = makeLeg(1);
-
-// निळा शर्ट + टाय (फोटोप्रमाणे)
-bodyG.add(mesh(new THREE.CylinderGeometry(20, 24, 62, 20), M.shirt, 0, 70, 0));
-bodyG.add(mesh(new THREE.BoxGeometry(5.5, 10, 2.5), M.tie, 0, 102, 20));
-{
-  const tieBody = mesh(new THREE.BoxGeometry(5, 30, 2), M.tie, 0, 86, 22);
-  tieBody.rotation.x = 0.06; bodyG.add(tieBody);
-}
-// उघडा पांढरा कोट
-{
-  const coatMat = M.coat.clone(); coatMat.side = THREE.DoubleSide;
-  bodyG.add(mesh(new THREE.CylinderGeometry(28, 35, 76, 24, 1, true, 0.52, Math.PI*2 - 1.04), coatMat, 0, 74, 0));
-  for (const sx of [-1, 1]) {
-    const lapel = mesh(new THREE.BoxGeometry(8, 26, 2), M.coat, sx*14, 95, 23);
-    lapel.rotation.y = sx * -0.45; lapel.rotation.z = sx * 0.12; bodyG.add(lapel);
-  }
-  const collarMat = M.coat.clone(); collarMat.side = THREE.DoubleSide;
-  bodyG.add(mesh(new THREE.CylinderGeometry(12.5, 14, 8, 16, 1, true, Math.PI*0.7, Math.PI*1.6), collarMat, 0, 107, 0));
-  const pocket = mesh(new THREE.BoxGeometry(15, 11, 2.5), M.coat, -19, 76, 20);
-  pocket.rotation.y = 0.5; bodyG.add(pocket);
-  const pen = mesh(new THREE.CylinderGeometry(1.5, 1.5, 10, 8), M.steth, -21, 84, 21);
-  pen.rotation.z = 0.15; bodyG.add(pen);
-}
-bodyG.add(mesh(new THREE.CylinderGeometry(8, 8, 12, 16), M.skin, 0, 110, 0));
-
-function makeArm(side) {
-  const g = new THREE.Group(); g.position.set(side*31, 102, 0);
-  g.add(mesh(new THREE.CapsuleGeometry(7, 28, 6, 14), M.coat, 0, -20, 0));
-  g.add(mesh(new THREE.CylinderGeometry(7.6, 7.6, 6, 14), M.shirt, 0, -37, 0));
-  g.add(mesh(new THREE.SphereGeometry(7.2, 18, 14), M.skin, 0, -44, 0));
-  const thumb = mesh(new THREE.CapsuleGeometry(2.2, 4, 4, 8), M.skin, side*5.5, -43, 3);
-  thumb.rotation.z = side * 0.5; g.add(thumb);
-  bodyG.add(g); return g;
-}
-const armL = makeArm(-1), armR = makeArm(1);
-
-{ // मेडिकल बॅग — उजव्या हातात (फोटोप्रमाणे: त्याच्या डाव्या हातात)
-  const bag = new THREE.Group(); bag.position.set(0, -46, 3); armR.add(bag);
-  bag.add(mesh(new THREE.BoxGeometry(46, 34, 17), M.bag, 0, -19, 0));
-  bag.add(mesh(new THREE.BoxGeometry(46, 5, 17.5), M.bagD, 0, -4, 0));
-  bag.add(mesh(new THREE.TorusGeometry(10, 2.4, 10, 28), M.red, 0, -19, 8.8));
-  bag.add(mesh(new THREE.BoxGeometry(13, 4.6, 2), M.red, 0, -19, 9));
-  bag.add(mesh(new THREE.BoxGeometry(4.6, 13, 2), M.red, 0, -19, 9));
-  bag.add(mesh(new THREE.TorusGeometry(8, 2, 8, 18, Math.PI), M.metal, 0, -1, 0));
-  for (const sx of [-1, 1]) bag.add(mesh(new THREE.BoxGeometry(6, 4, 3), M.metal, sx*14, -3, 0));
-}
-
-const steth = new THREE.Group(); steth.position.set(0, 106, 4); bodyG.add(steth);
-{
-  const loop = mesh(new THREE.TorusGeometry(15, 2.6, 10, 32, Math.PI*1.5), M.steth, 0, 2, 0);
-  loop.rotation.set(1.35, 0, 2.35); steth.add(loop);
-  for (const sx of [-1, 1]) {
-    const curve = new THREE.CatmullRomCurve3([
-      new THREE.Vector3(sx*10, 4, 2), new THREE.Vector3(sx*16, 16, -2), new THREE.Vector3(sx*19, 26, -6),
-    ]);
-    steth.add(mesh(new THREE.TubeGeometry(curve, 16, 2, 8), M.steth));
-    steth.add(mesh(new THREE.SphereGeometry(2.6, 10, 8), M.metal, sx*19, 27, -6.5));
-  }
-  for (const sx of [-1, 1]) {
-    const curve = new THREE.CatmullRomCurve3([
-      new THREE.Vector3(sx*9, 0, 6), new THREE.Vector3(sx*12, -18, 14), new THREE.Vector3(sx*6, -32, 20),
-    ]);
-    steth.add(mesh(new THREE.TubeGeometry(curve, 24, 2.1, 8), M.steth));
-  }
-  steth.add(mesh(new THREE.SphereGeometry(3, 10, 8), M.steth, 0, -30, 19));
-  const chest = mesh(new THREE.CylinderGeometry(7, 7, 4.5, 20), M.steth, 9, -36, 20);
-  chest.rotation.x = Math.PI/2; steth.add(chest);
-  steth.add(mesh(new THREE.TorusGeometry(7, 1.2, 8, 24), M.metal, 9, -36, 22.4));
-  const dia = mesh(new THREE.CylinderGeometry(5.4, 5.4, 1, 18),
-    new THREE.MeshStandardMaterial({ color: 0xdff7f2, roughness: 0.3 }), 9, -36, 22.8);
-  dia.rotation.x = Math.PI/2; steth.add(dia);
-}
-
-const headG = new THREE.Group(); headG.position.set(0, 118, 0); headG.scale.setScalar(1.12); bodyG.add(headG);
-headG.add(mesh(new THREE.SphereGeometry(24, 36, 28), M.skin, 0, 16, 0));
-for (const sx of [-1, 1]) headG.add(mesh(new THREE.SphereGeometry(3.6, 12, 10), M.skinD, sx*23.5, 14, 0));
-{ // तपकिरी केस — quiff (फोटोप्रमाणे)
-  const base = mesh(new THREE.SphereGeometry(25, 28, 20), M.hair, 0, 26, -3);
-  base.scale.set(1, 0.72, 1); headG.add(base);
-  for (const sx of [-1, 1]) {
-    const side = mesh(new THREE.SphereGeometry(10, 14, 12), M.hair, sx*20, 26, 2);
-    side.scale.set(0.7, 1, 0.9); headG.add(side);
-  }
-  const tufts = [[-10, 44, 7, -0.3], [-3.5, 46, 8, -0.28], [3.5, 46, 8, 0.28], [10, 44, 7, 0.3]];
-  for (const [tx, ty, tz, rz] of tufts) {
-    const tuft = mesh(new THREE.SphereGeometry(7, 14, 12), M.hair, tx, ty, tz);
-    tuft.scale.set(1, 2.0, 1.1); tuft.rotation.z = rz; tuft.rotation.x = -0.28; headG.add(tuft);
-  }
-  const back = mesh(new THREE.SphereGeometry(12, 14, 12), M.hair, 0, 30, -16);
-  back.scale.set(1.4, 1, 0.8); headG.add(back);
-}
-headG.add(mesh(new THREE.SphereGeometry(3.4, 14, 12), M.skinD, 0, 12, 23.4));
-const eyeGroups = [];
-for (const sx of [-1, 1]) {
-  const eg = new THREE.Group(); eg.position.set(sx*9.5, 18, 0); headG.add(eg);
-  eg.add(mesh(new THREE.SphereGeometry(6.2, 20, 16), M.white, 0, 0, 20));
-  const pupil = mesh(new THREE.SphereGeometry(2.8, 14, 12), M.pupil, 0, 0, 24.6);
-  eg.add(pupil);
-  const sh = new THREE.Mesh(new THREE.SphereGeometry(1.1, 8, 8), M.shine);
-  sh.position.set(1.1, 1.1, 26.8); eg.add(sh);
-  const brow = mesh(new THREE.BoxGeometry(12, 3, 2.6), M.brown, 0, 9.5, 19.5);
-  brow.rotation.z = sx * -0.08; eg.add(brow);
-  eyeGroups.push({ eg, pupil, brow, sx, baseRZ: sx * -0.08, baseY: 9.5 });
-}
-{ // काळा चष्मा — rounded rectangle (फोटोप्रमाणे)
-  function rrShape(w, h, r) {
-    const s = new THREE.Shape(), x = -w/2, y = -h/2;
-    s.moveTo(x+r, y);
-    s.lineTo(x+w-r, y); s.quadraticCurveTo(x+w, y, x+w, y+r);
-    s.lineTo(x+w, y+h-r); s.quadraticCurveTo(x+w, y+h, x+w-r, y+h);
-    s.lineTo(x+r, y+h); s.quadraticCurveTo(x, y+h, x, y+h-r);
-    s.lineTo(x, y+r); s.quadraticCurveTo(x, y, x+r, y);
-    return s;
-  }
-  for (const sx of [-1, 1]) {
-    const lens = rrShape(18, 15, 4.5);
-    lens.holes.push(new THREE.Path(rrShape(14, 11, 3).getPoints(10)));
-    const frame = mesh(new THREE.ExtrudeGeometry(lens, { depth: 1.8, bevelEnabled: false }), M.glass, sx*9.8, 19, 21);
-    headG.add(frame);
-    headG.add(mesh(new THREE.BoxGeometry(1.8, 1.8, 20), M.glass, sx*18.5, 19, 12));
-  }
-  headG.add(mesh(new THREE.BoxGeometry(5.5, 2.2, 1.8), M.glass, 0, 20, 21.4));
-}
-{ // दाढी + मिशा (फोटोप्रमाणे)
-  const beard = mesh(new THREE.TorusGeometry(16, 5, 10, 26, Math.PI), M.hair, 0, 10, 10);
-  beard.rotation.z = Math.PI; beard.rotation.x = -0.15; headG.add(beard);
-  for (const sx of [-1, 1]) {
-    const mo = mesh(new THREE.CapsuleGeometry(2.2, 5, 4, 8), M.hair, sx*4.5, 8.5, 22);
-    mo.rotation.z = Math.PI/2 + sx*0.25; headG.add(mo);
-  }
-  const chin = mesh(new THREE.SphereGeometry(5, 12, 10), M.hair, 0, -3, 19);
-  chin.scale.set(1.4, 1, 0.8); headG.add(chin);
-}
-// मोठं हसू — दातांसह (फोटोप्रमाणे)
-const mouthOpen = new THREE.Group(); mouthOpen.position.set(0, 3, 21); headG.add(mouthOpen);
-{
-  const inner = mesh(new THREE.SphereGeometry(7, 18, 14), M.mouthD, 0, 0, 0);
-  inner.scale.set(1.25, 0.95, 0.55); mouthOpen.add(inner);
-  mouthOpen.add(mesh(new THREE.BoxGeometry(11, 3.6, 2), M.white, 0, 3.4, 1.2));
-  const tongue = mesh(new THREE.SphereGeometry(4, 14, 12), M.tongue, 0, -2.5, 1.5);
-  tongue.scale.set(1.2, 0.55, 0.8); mouthOpen.add(tongue);
-}
-const mouthO = mesh(new THREE.TorusGeometry(3.8, 1.9, 10, 20), M.mouthD, 0, 3, 21);
-mouthO.visible = false; headG.add(mouthO);
-const mouths = [mouthOpen, mouthO];
-let lastMouth = 0, mouthPopT = -10;
-for (const sx of [-1, 1]) {
-  const b = mesh(new THREE.SphereGeometry(3, 12, 10), M.blush, sx*14, 10, 18.5);
-  b.scale.set(1, 0.7, 0.5); headG.add(b);
-}
-{
-  const sh = new THREE.Mesh(new THREE.PlaneGeometry(140, 46), new THREE.ShadowMaterial({ opacity: 0.3 }));
-  sh.rotation.x = -Math.PI/2; sh.position.y = 1; sh.receiveShadow = true; doctor.add(sh);
-}
-
-
 /* ================= सुटकेस (इंट्रो) ================= */
+/* आरोग्य विभाग मेडिकल केस — पांढरी बॉडी, निळ्या पट्ट्या, red cross, 'आरोग्य विभाग' */
 const SM = {
-  leather:  new THREE.MeshStandardMaterial({ color: 0x8a5a2b, roughness: 0.75 }),
-  leatherL: new THREE.MeshStandardMaterial({ color: 0x9c6a35, roughness: 0.7 }),
-  strap:    new THREE.MeshStandardMaterial({ color: 0x4e3016, roughness: 0.8 }),
-  gold:     new THREE.MeshStandardMaterial({ color: 0xd9a527, roughness: 0.35, metalness: 0.7 }),
-  inner:    new THREE.MeshStandardMaterial({ color: 0x2b1c10, roughness: 0.9 }),
+  body:   new THREE.MeshStandardMaterial({ color: 0xf4f7fb, roughness: 0.45 }),
+  bodyL:  new THREE.MeshStandardMaterial({ color: 0xe9eef5, roughness: 0.5 }),
+  strap:  new THREE.MeshStandardMaterial({ color: 0x1d4ed8, roughness: 0.6 }),
+  chrome: new THREE.MeshStandardMaterial({ color: 0xd7dde5, roughness: 0.25, metalness: 0.85 }),
+  inner:  new THREE.MeshStandardMaterial({ color: 0xdbeafe, roughness: 0.85 }),
+  red:    new THREE.MeshStandardMaterial({ color: 0xdc2626, roughness: 0.5 }),
 };
 const suit = new THREE.Group(); scene.add(suit);
 let lidPivot, latchL, latchR, suitGlow, suitBaseY = 0;
 const sparkles = [];
 {
   const Wd = 176, Ht = 100, Dp = 72;
-  suit.add(mesh(new THREE.BoxGeometry(Wd, Ht, Dp), SM.leather, 0, 0, 0));
+  suit.add(mesh(new THREE.BoxGeometry(Wd, Ht, Dp), SM.body, 0, 0, 0));
   for (const sx of [-1, 1]) suit.add(mesh(new THREE.BoxGeometry(15, Ht + 3, Dp + 3), SM.strap, sx*52, 0, 0));
   for (const sx of [-1, 1]) {
-    const l = mesh(new THREE.BoxGeometry(20, 26, 6), SM.gold, sx*52, 26, Dp/2 + 2);
+    const l = mesh(new THREE.BoxGeometry(20, 26, 6), SM.chrome, sx*52, 26, Dp/2 + 2);
     if (sx < 0) latchL = l; else latchR = l;
     suit.add(l);
   }
+  // red cross (समोर)
+  suit.add(mesh(new THREE.BoxGeometry(17, 46, 3), SM.red, 0, 14, Dp/2 + 1));
+  suit.add(mesh(new THREE.BoxGeometry(46, 17, 3), SM.red, 0, 14, Dp/2 + 1));
+  // 'आरोग्य विभाग' मजकूर प्लेट
+  const tc = document.createElement('canvas'); tc.width = 512; tc.height = 128;
+  const tg = tc.getContext('2d');
+  tg.fillStyle = '#f4f7fb'; tg.fillRect(0, 0, 512, 128);
+  tg.fillStyle = '#1e3a8a'; tg.font = '700 62px "Noto Sans Devanagari", "Mangal", sans-serif';
+  tg.textAlign = 'center'; tg.textBaseline = 'middle';
+  tg.fillText('आरोग्य विभाग', 256, 68);
+  const tplate = new THREE.Mesh(new THREE.PlaneGeometry(124, 31),
+    new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(tc) }));
+  tplate.position.set(0, -32, Dp/2 + 1.5); suit.add(tplate);
   lidPivot = new THREE.Group(); lidPivot.position.set(0, Ht/2, -Dp/2); suit.add(lidPivot);
-  lidPivot.add(mesh(new THREE.BoxGeometry(Wd, 30, Dp), SM.leatherL, 0, 15, Dp/2));
+  lidPivot.add(mesh(new THREE.BoxGeometry(Wd, 30, Dp), SM.bodyL, 0, 15, Dp/2));
   lidPivot.add(mesh(new THREE.BoxGeometry(Wd - 26, 5, Dp - 26), SM.inner, 0, 1.5, Dp/2));
   const hg = new THREE.Group(); hg.position.set(0, 30, Dp/2); lidPivot.add(hg);
   const hd = new THREE.Mesh(new THREE.TorusGeometry(15, 4.5, 10, 22, Math.PI), SM.strap);
@@ -420,61 +240,10 @@ function measure() {
 }
 
 /* ---------- choreography ---------- */
-function buildKeys() {
-  const { W, cardTop, cardH, CX } = Met;
-  const topY = cardTop + 92, sideY = cardTop + cardH*0.35,
-        midY = cardTop + cardH*0.5, botY = cardTop + cardH + 58;
-  const P = (t, x, y, o={}) => Object.assign(
-    { t, x, y, s: 1, ry: 0, rx: 0, rz: 0, hry: 0, hrz: 0, hrx: 0,
-      brow: 0, tilt: 0, wide: 0, mouth: 0 }, o);
-  return [
-    P(0,    CX, topY),
-    P(1.2,  CX, topY, { hry: -0.45, tilt: 0.25 }),
-    P(2.4,  CX, topY, { hry: 0.45, tilt: 0.25 }),
-    P(3.4,  CX, topY + 34),
-    P(4.4,  CX, midY),
-    P(5.0,  -8, sideY, { hry: 0.3, brow: 0.6, wide: 0.15 }),
-    P(6.4,  -8, sideY, { hry: 0.3, brow: 0.6, wide: 0.15 }),
-    P(7.6,  -8, sideY, { hry: 0.25, brow: 0.7, wide: 0.2 }),
-    P(8.2,  CX, midY),
-    P(9.0,  W+8, sideY, { hry: -0.2, brow: 1, wide: 0.35, mouth: 1 }),
-    P(11.0, W+8, sideY, { hry: 0, brow: 0.5, wide: 0.1, mouth: 0 }),
-    P(12.0, CX, midY),
-    P(12.8, CX+95, topY, { hrz: 0.2, brow: 0.5 }),
-    P(14.8, CX+95, topY, { hrz: 0.2, hry: -0.3, brow: 0.5 }),
-    P(15.6, CX, topY + 40),
-    P(16.4, CX, cardTop + cardH + 30),
-    P(17.2, 46, botY, { hrz: -0.2, hry: 0.3, brow: 0.4 }),
-    P(19.0, 46, botY, { hrz: -0.2, hry: -0.25, brow: 0.4 }),
-    P(19.8, CX, cardTop + cardH + 30),
-    P(20.6, W-46, botY, { hry: -0.3, brow: 0.7, wide: 0.2 }),
-    P(22.4, W-46, botY, { hry: -0.3, brow: 0.7, wide: 0.2 }),
-    P(23.0, CX, midY),
-    P(24.0, CX, topY),
-  ];
-}
-let KEYS = [];
-const NUMK = ['x','y','s','ry','rx','rz','hry','hrz','hrx','brow','tilt','wide'];
-function poseAt(t) {
-  let i = 0;
-  while (i < KEYS.length-2 && t >= KEYS[i+1].t) i++;
-  const a = KEYS[i], b = KEYS[i+1];
-  const span = b.t - a.t, f = span <= 0 ? 0 : Math.min(1, Math.max(0, (t-a.t)/span));
-  const e = f*f*(3-2*f), P = {};
-  for (const k of NUMK) P[k] = a[k] + (b[k]-a[k])*e;
-  P.mouth = f < 0.5 ? a.mouth : b.mouth;
-  return P;
-}
-const bump = (t, a, b, c, d) => {
-  const s = (x, p, q) => { const f = Math.min(1, Math.max(0, (x-p)/(q-p))); return f*f*(3-2*f); };
-  return s(t, a, b) * (1 - s(t, c, d));
-};
-
 /* ---------- loop ---------- */
 const clock = new THREE.Clock();
-let prevX = null;
-measure(); KEYS = buildKeys();
-window.addEventListener('resize', () => { measure(); KEYS = buildKeys(); });
+measure();
+window.addEventListener('resize', () => { measure(); });
 
 /* ---------- suitcase intro ---------- */
 const INTRO = 5.4;
@@ -483,7 +252,6 @@ loginCardEl.style.opacity = '0';
 loginCardEl.style.pointerEvents = 'none';
 logoEl.style.opacity = '0';
 loginCardEl.style.transformOrigin = '50% 100%';
-doctor.visible = false;
 const sstep = (x, a, b) => { const f = Math.min(1, Math.max(0, (x-a)/(b-a))); return f*f*(3-2*f); };
 function finishIntro() {
   loginCardEl.style.transform = ''; loginCardEl.style.opacity = ''; loginCardEl.style.pointerEvents = '';
@@ -494,8 +262,7 @@ function finishIntro() {
   latchL.scale.setScalar(1); latchR.scale.setScalar(1);
   latchL.rotation.x = 0; latchR.rotation.x = 0;
   suitGlow.material.opacity = 0.22;
-  doctor.visible = true;
-  measure(); KEYS = buildKeys();
+  measure();
 }
 function introTick(el, dt) {
   const bnc = 1 - sstep(el, 0, 1.0);
@@ -518,49 +285,10 @@ function introTick(el, dt) {
   renderer.render(scene, camera);
 }
 
-function doctorTick(el, dt) {
-  const t = (el - INTRO) % LOOP;
-  const P = poseAt(t);
-
-  const vx = prevX === null ? 0 : (P.x - prevX) / Math.max(dt, 1/240);
-  prevX = P.x;
-  const wob = Math.min(Math.abs(vx)/260, 1);
-
-  const bobY = wob*4*Math.abs(Math.sin(el*10));
-  doctor.position.set(P.x, Met.H - P.y + bobY, 0);
-  doctor.scale.setScalar(P.s * 0.92);
-  doctor.rotation.set(P.rx, P.ry, P.rz + wob*0.05*Math.sin(el*10));
-
-  bodyG.scale.y = 1 + 0.012*Math.sin(el*2*Math.PI/2.6);
-  bodyG.position.y = 1.5*Math.sin(el*2*Math.PI/2.6 + 0.6);
-  headG.rotation.set(P.hrx, P.hry, P.hrz);
-
-  // डोळे
-  const bp = el % 4.2, blinkY = bp < 0.13 ? 0.12 : 1;
-  const es = 1 + P.wide*0.4;
-  for (const e of eyeGroups) {
-    e.eg.scale.set(es, es*blinkY, 1);
-    e.pupil.position.x = THREE.MathUtils.clamp(P.hry*9, -3, 3);
-    e.pupil.position.y = THREE.MathUtils.clamp(-P.hrx*9, -2.5, 2.5);
-    e.brow.position.y = e.baseY + P.brow*3;
-    e.brow.rotation.z = e.baseRZ + e.sx * P.tilt * -1;
-  }
-  // तोंड
-  const mi = Math.round(P.mouth);
-  if (mi !== lastMouth) { lastMouth = mi; mouthPopT = el; }
-  mouths.forEach((m, i) => { m.visible = i === mi; });
-  mouths[mi].scale.setScalar(1 + 0.35*Math.exp(-(el-mouthPopT)*6));
-
-  // हात हलवणे — फक्त डोकावताना
-  const wL = bump(t, 6.2, 6.5, 7.1, 7.4), wR = bump(t, 21.0, 21.3, 21.9, 22.2);
-  armL.rotation.x = 0.06*Math.sin(el*1.7);
-  armR.rotation.x = 0.06*Math.sin(el*1.7 + 1);
-  armL.rotation.z = -wL*(2.2 + Math.sin(el*13)*0.45);
-  armR.rotation.z =  wR*(2.2 + Math.sin(el*13)*0.45);
-
-  steth.rotation.x = Math.sin(el*2*Math.PI/3.4)*0.07;
-  steth.rotation.z = Math.cos(el*2*Math.PI/3.4)*0.05;
-
+function idleTick(el, dt) {
+  // इंट्रो नंतर: सुटकेस शांतपणे 'श्वास' घेते — सौम्य वर-खाली + glow
+  suit.position.y = suitBaseY + Math.sin(el*1.6)*2.5;
+  suitGlow.material.opacity = 0.2 + 0.06*Math.sin(el*1.6);
   renderer.render(scene, camera);
 }
 function tick() {
@@ -570,7 +298,7 @@ function tick() {
   if (el < INTRO) introTick(el, dt);
   else {
     if (!introDone) { introDone = true; finishIntro(); }
-    doctorTick(el, dt);
+    idleTick(el, dt);
   }
 }
 tick();
