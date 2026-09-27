@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Preview — 3D Doctor Climbs & Runs on Tab</title>
+<title>Preview — 3D Doctor Behind Login Tab</title>
 <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script type="importmap">
 { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
@@ -104,14 +104,14 @@
   </div>
 
   <div class="note">
-    <div><b>सुधारलेलं ॲनिमेशन</b> ✨ — सुमारे १०व्या सेकंदाला डॉक्टर <b>मागून येऊन टॅबच्या कडेवर हात ठेवतो</b> 🧗, वर चढतो, आणि कडेवरून <b>नैसर्गिक धावत</b> पलीकडे जातो 🏃 — मग उडी मारून लपतो!<br>
-    बघा आणि सांगा — आता नीट वाटतंय का? 🩺</div>
+    <div><b>3D डॉक्टर — फक्त टॅबच्या मागे</b> 🩺 — तो नेहमी लॉगिन टॅबच्या <b>मागेच</b> राहतो: वरून डोकावतो 👀, डाव्या-उजव्या कडून वाकून बघतो, आश्चर्यचकित होतो 😮, खालच्या कोपऱ्यातून हात हलवतो 👋<br>
+    पुढं किंवा वर येत नाही — स्वच्छ, नीट ॲनिमेशन. आवडल्यास app च्या लॉगिन स्क्रीनवर टाकतो!</div>
   </div>
 
 <script type="module">
 import * as THREE from 'three';
 
-const LOOP = 30;
+const LOOP = 24;
 const wrap = document.getElementById('cardWrap');
 const docLayer = document.getElementById('doc3d');
 
@@ -301,7 +301,7 @@ function buildKeys() {
   const topY = cardTop + 92, sideY = cardTop + cardH*0.35,
         midY = cardTop + cardH*0.5, botY = cardTop + cardH + 58;
   const P = (t, x, y, o={}) => Object.assign(
-    { t, x, y, s: 1, z: 4, climb: 0, ry: 0, rx: 0, rz: 0, hry: 0, hrz: 0, hrx: 0,
+    { t, x, y, s: 1, ry: 0, rx: 0, rz: 0, hry: 0, hrz: 0, hrx: 0,
       brow: 0, tilt: 0, wide: 0, mouth: 0 }, o);
   return [
     P(0,    CX, topY),
@@ -310,36 +310,27 @@ function buildKeys() {
     P(3.4,  CX, topY + 34),
     P(4.4,  CX, midY),
     P(5.0,  -8, sideY, { hry: 0.3, brow: 0.6, wide: 0.15 }),
-    P(6.2,  -8, sideY, { hry: 0.3, brow: 0.6, wide: 0.15 }),
-    P(7.4,  -8, sideY, { hry: 0.25, brow: 0.7, wide: 0.2 }),
-    P(8.0,  -8, sideY),
-    P(8.8,  70, midY),
-    P(9.6,  70, midY),
-    P(10.4, 70, cardTop + 116, { climb: 1, hrx: -0.3, brow: 0.7, mouth: 2 }), // हात कडेवर — मागून चढतो
-    P(11.2, 70, cardTop + 50,  { climb: 0.55, hrx: -0.15, brow: 0.5, mouth: 2 }), // ओढून वर
-    P(11.8, 70, cardTop - 2,   { brow: 0.5, wide: 0.15, mouth: 0 }),  // कडेवर उभा!
-    P(12.4, 70, cardTop - 2,   { z: 6, ry: 0.25, brow: 0.6, wide: 0.2 }),
-    P(13.0, 70, cardTop - 2,   { z: 6, ry: 0.3, rz: -0.14, hrx: 0.06 }),
-    P(16.0, W-70, cardTop - 2, { z: 6, ry: 0.3, rz: -0.14, hrx: 0.06 }), // धावतो
-    P(16.5, W-62, cardTop + 10,{ z: 6, ry: 0.3, hrx: 0.35 }),  // थांबतो, खाली बघतो
-    P(17.0, W-58, cardTop + 22,{ z: 6, rx: 0.18 }),           // वाकतो
-    P(17.5, W+16, cardTop + 40,{ z: 6 }),                     // उडी
-    P(18.1, W+16, midY,        { z: 4 }),                     // मागे
-    P(18.8, CX, cardTop + cardH + 30),
-    P(19.6, 46, botY, { hrz: -0.2, hry: 0.3, brow: 0.4 }),
-    P(21.4, 46, botY, { hrz: -0.2, hry: -0.25, brow: 0.4 }),
-    P(22.2, CX, cardTop + cardH + 30),
-    P(23.0, W-46, botY, { hry: -0.3, brow: 0.7, wide: 0.2 }),
-    P(24.6, W-46, botY, { hry: -0.3, brow: 0.7, wide: 0.2 }),
-    P(25.4, CX, midY),
-    P(26.2, CX, topY),
-    P(27.4, CX, topY, { hry: 0.4 }),
-    P(28.6, CX, topY, { hry: -0.4 }),
-    P(30.0, CX, topY),
+    P(6.4,  -8, sideY, { hry: 0.3, brow: 0.6, wide: 0.15 }),
+    P(7.6,  -8, sideY, { hry: 0.25, brow: 0.7, wide: 0.2 }),
+    P(8.2,  CX, midY),
+    P(9.0,  W+8, sideY, { hry: -0.2, brow: 1, wide: 0.35, mouth: 1 }),
+    P(11.0, W+8, sideY, { hry: 0, brow: 0.5, wide: 0.1, mouth: 0 }),
+    P(12.0, CX, midY),
+    P(12.8, CX+95, topY, { hrz: 0.2, brow: 0.5 }),
+    P(14.8, CX+95, topY, { hrz: 0.2, hry: -0.3, brow: 0.5 }),
+    P(15.6, CX, topY + 40),
+    P(16.4, CX, cardTop + cardH + 30),
+    P(17.2, 46, botY, { hrz: -0.2, hry: 0.3, brow: 0.4 }),
+    P(19.0, 46, botY, { hrz: -0.2, hry: -0.25, brow: 0.4 }),
+    P(19.8, CX, cardTop + cardH + 30),
+    P(20.6, W-46, botY, { hry: -0.3, brow: 0.7, wide: 0.2 }),
+    P(22.4, W-46, botY, { hry: -0.3, brow: 0.7, wide: 0.2 }),
+    P(23.0, CX, midY),
+    P(24.0, CX, topY),
   ];
 }
 let KEYS = [];
-const NUMK = ['x','y','s','climb','ry','rx','rz','hry','hrz','hrx','brow','tilt','wide'];
+const NUMK = ['x','y','s','ry','rx','rz','hry','hrz','hrx','brow','tilt','wide'];
 function poseAt(t) {
   let i = 0;
   while (i < KEYS.length-2 && t >= KEYS[i+1].t) i++;
@@ -347,7 +338,6 @@ function poseAt(t) {
   const span = b.t - a.t, f = span <= 0 ? 0 : Math.min(1, Math.max(0, (t-a.t)/span));
   const e = f*f*(3-2*f), P = {};
   for (const k of NUMK) P[k] = a[k] + (b[k]-a[k])*e;
-  P.z = f < 0.5 ? a.z : b.z;
   P.mouth = f < 0.5 ? a.mouth : b.mouth;
   return P;
 }
@@ -372,38 +362,23 @@ function tick() {
   prevX = P.x;
   const wob = Math.min(Math.abs(vx)/260, 1);
 
-  const runEnv   = bump(t, 12.8, 13.2, 15.6, 16.0);
-  const tuckEnv  = bump(t, 16.9, 17.1, 17.4, 17.7);
-  const climbEnv = P.climb;
-  const stride = Math.sin(el*13);
-
-  // धावताना मध्येच प्रेक्षकाकडे एक नजर
-  let hry = P.hry;
-  const glance = bump(t, 14.0, 14.2, 14.6, 14.8);
-  hry += glance * 0.45;
-
-  // "ta-da" छोटी उडी
-  let hopY = 0;
-  if (t > 11.9 && t < 12.5) hopY = -Math.sin((t-11.9)/0.6*Math.PI)*6;
-
-  const bobY = wob*4*Math.abs(Math.sin(el*10)) + runEnv*Math.abs(stride)*5 + hopY;
+  const bobY = wob*4*Math.abs(Math.sin(el*10));
   doctor.position.set(P.x, Met.H - P.y + bobY, 0);
   doctor.scale.setScalar(P.s * 0.92);
   doctor.rotation.set(P.rx, P.ry, P.rz + wob*0.05*Math.sin(el*10));
-  docLayer.style.zIndex = String(P.z);
 
   bodyG.scale.y = 1 + 0.012*Math.sin(el*2*Math.PI/2.6);
   bodyG.position.y = 1.5*Math.sin(el*2*Math.PI/2.6 + 0.6);
-  headG.rotation.set(P.hrx, hry, P.hrz);
+  headG.rotation.set(P.hrx, P.hry, P.hrz);
 
   // डोळे
   const bp = el % 4.2, blinkY = bp < 0.13 ? 0.12 : 1;
-  const es = 1 + (P.wide + glance*0.25)*0.4;
+  const es = 1 + P.wide*0.4;
   for (const e of eyeGroups) {
     e.eg.scale.set(es, es*blinkY, 1);
-    e.pupil.position.x = THREE.MathUtils.clamp(hry*9, -3, 3);
+    e.pupil.position.x = THREE.MathUtils.clamp(P.hry*9, -3, 3);
     e.pupil.position.y = THREE.MathUtils.clamp(-P.hrx*9, -2.5, 2.5);
-    e.brow.position.y = e.baseY + (P.brow + glance*0.3)*3;
+    e.brow.position.y = e.baseY + P.brow*3;
     e.brow.rotation.z = e.baseRZ + e.sx * P.tilt * -1;
   }
   // तोंड
@@ -412,16 +387,12 @@ function tick() {
   mouths.forEach((m, i) => { m.visible = i === mi; });
   mouths[mi].scale.setScalar(1 + 0.35*Math.exp(-(el-mouthPopT)*6));
 
-  // पाय — सगळे envelope बेरीज (कोणताही धक्का नाही)
-  legL.rotation.x = runEnv*(stride*0.6) - tuckEnv*1.1;
-  legR.rotation.x = runEnv*(-stride*0.6) - tuckEnv*1.1;
-
-  // हात — बेरीज, नैसर्गिक
-  const wL = bump(t, 6.2, 6.5, 7.1, 7.4), wR = bump(t, 23.2, 23.5, 24.1, 24.4);
-  armL.rotation.x = 0.06*Math.sin(el*1.7) + runEnv*(-stride*0.55) + climbEnv*(-2.5) - tuckEnv*0.8;
-  armR.rotation.x = 0.06*Math.sin(el*1.7+1) + runEnv*(stride*0.55) + climbEnv*(-2.5) - tuckEnv*0.8;
-  armL.rotation.z = -wL*(2.2 + Math.sin(el*13)*0.45) + climbEnv*(-0.35) + runEnv*(-0.12);
-  armR.rotation.z =  wR*(2.2 + Math.sin(el*13)*0.45) + climbEnv*(0.35) + runEnv*(0.12);
+  // हात हलवणे — फक्त डोकावताना
+  const wL = bump(t, 6.2, 6.5, 7.1, 7.4), wR = bump(t, 21.0, 21.3, 21.9, 22.2);
+  armL.rotation.x = 0.06*Math.sin(el*1.7);
+  armR.rotation.x = 0.06*Math.sin(el*1.7 + 1);
+  armL.rotation.z = -wL*(2.2 + Math.sin(el*13)*0.45);
+  armR.rotation.z =  wR*(2.2 + Math.sin(el*13)*0.45);
 
   steth.rotation.x = Math.sin(el*2*Math.PI/3.4)*0.07;
   steth.rotation.z = Math.cos(el*2*Math.PI/3.4)*0.05;
