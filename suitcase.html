@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Preview — Suitcase Login Intro 💼</title>
+<link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script type="importmap">
+{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
+</script>
+<style>
+  html, body { margin: 0; padding: 0; }
+  body { font-family: 'Mukta', sans-serif; background: #0b1f33; color: #fff;
+    min-height: 100vh; overflow-x: hidden; }
+  .bg-fx { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+  .bg-fx i { position: absolute; border-radius: 50%; filter: blur(70px); }
+  .bg-fx i:nth-child(1) { width: 300px; height: 300px; background: #0d9488; top: -80px; left: -80px; opacity: .16; }
+  .bg-fx i:nth-child(2) { width: 340px; height: 340px; background: #1a4a72; top: 35%; right: -110px; opacity: .35; }
+  .bg-fx i:nth-child(3) { width: 280px; height: 280px; background: #b45309; bottom: -90px; left: 25%; opacity: .14; }
+  .dust { position: fixed; border-radius: 50%; background: #fff; filter: blur(3px);
+    opacity: .1; z-index: 20; pointer-events: none; animation: dustDrift linear infinite; }
+  @keyframes dustDrift { from { transform: translate(-10vw, 12vh); } to { transform: translate(110vw, -14vh); } }
+  .glass { position: fixed; inset: 0; z-index: 30; pointer-events: none;
+    background: linear-gradient(115deg, transparent 42%, rgba(255,255,255,.055) 47%, transparent 54%); }
+
+  .stage { position: relative; z-index: 1; max-width: 400px; margin: 0 auto; padding: 84px 16px 20px; }
+  .card-wrap { position: relative; perspective: 1000px; }
+  .doc3d { position: absolute; inset: 0; z-index: 4; pointer-events: none; }
+  .doc3d canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+
+  .login-card { position: relative; z-index: 5; background: rgba(18,40,63,.92);
+    border: 1px solid rgba(255,255,255,.15); border-radius: 24px; padding: 24px;
+    backdrop-filter: blur(20px); box-shadow: 0 20px 50px rgba(0,0,0,.45); }
+  .logo { text-align: center; margin-bottom: 18px; }
+  .logo-mark { width: 64px; height: 64px; margin: 0 auto; border-radius: 18px;
+    background: linear-gradient(135deg, #fcd34d, #f97316); display: flex;
+    align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(249,115,22,.4); }
+  .logo h1 { margin: 10px 0 2px; font-size: 26px; font-weight: 800;
+    background: linear-gradient(90deg, #fff, #fde68a, #fcd34d);
+    -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .logo p { margin: 0; font-size: 13px; color: #94a3b8; }
+  .tabs { position: relative; display: grid; grid-template-columns: 1fr 1fr; background: rgba(0,0,0,.25);
+    border: 1px solid rgba(255,255,255,.1); border-radius: 16px; padding: 4px; margin-bottom: 20px; }
+  .tabs .ind { position: absolute; top: 4px; bottom: 4px; left: 4px; width: calc(50% - 4px);
+    border-radius: 12px; background: linear-gradient(90deg, #fcd34d, #fb923c); }
+  .tabs span { position: relative; z-index: 1; text-align: center; font-size: 13px; font-weight: 700; padding: 9px 4px; }
+  .tabs span.on { color: #0b1f33; } .tabs span.off { color: #94a3b8; }
+  .fld { margin-bottom: 14px; }
+  .fld label { display: block; font-size: 12px; font-weight: 700; color: #cbd5e1; margin-bottom: 6px; }
+  .fld input { width: 100%; box-sizing: border-box; border-radius: 12px; border: 1px solid rgba(255,255,255,.15);
+    background: rgba(255,255,255,.1); padding: 10px 12px 10px 36px; color: #fff; font-size: 14px; outline: none; }
+  .fld input::placeholder { color: #64748b; }
+  .fld .wrap { position: relative; }
+  .fld .wrap i { position: absolute; left: 11px; top: 11px; font-size: 15px; opacity: .7; font-style: normal; }
+  .btn { width: 100%; border: none; border-radius: 12px; padding: 12px; font-size: 15px; font-weight: 800;
+    color: #0b1f33; font-family: inherit; background: linear-gradient(90deg, #fcd34d, #fb923c);
+    box-shadow: 0 6px 18px rgba(249,115,22,.35); }
+  .foot { text-align: center; font-size: 12px; color: #64748b; margin-top: 14px; }
+  .note { position: relative; z-index: 1; max-width: 400px; margin: 18px auto 30px; padding: 0 16px; }
+  .note div { background: #1a4a72; border-radius: 14px; padding: 12px 14px; font-size: 12.5px;
+    font-weight: 600; text-align: center; line-height: 1.7; color: #e2e8f0; }
+  .note b { color: #fcd34d; }
+</style>
+</head>
+<body>
+  <div class="bg-fx" aria-hidden="true"><i></i><i></i><i></i></div>
+  <span class="dust" style="width:9px;height:9px;top:18%;animation-duration:26s;"></span>
+  <span class="dust" style="width:6px;height:6px;top:55%;animation-duration:34s;animation-delay:-12s;"></span>
+  <span class="dust" style="width:12px;height:12px;top:74%;animation-duration:30s;animation-delay:-20s;"></span>
+  <div class="glass" aria-hidden="true"></div>
+
+  <div class="stage">
+    <div class="card-wrap" id="cardWrap">
+      <div class="doc3d" id="doc3d"></div>
+
+      <div class="logo">
+        <div class="logo-mark">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#0b1f33" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-3.6 8-10V5l-8-3-8 3v7c0 6.4 8 10 8 10z"/><path d="M9 12l2 2 4-4"/>
+          </svg>
+        </div>
+        <h1>आरोग्य सेवा अहवाल</h1>
+        <p>Smart Reporting for Health Workers</p>
+      </div>
+
+      <section class="login-card" id="loginCard">
+        <div class="tabs">
+          <div class="ind"></div>
+          <span class="on">👥 कर्मचारी लॉगिन</span>
+          <span class="off">🏢 PHC लॉगिन</span>
+        </div>
+        <div class="fld">
+          <label>ईमेल</label>
+          <div class="wrap"><i>✉️</i><input type="email" placeholder="you@example.com" disabled></div>
+        </div>
+        <div class="fld">
+          <label>पासवर्ड</label>
+          <div class="wrap"><i>🔒</i><input type="password" placeholder="••••••••" disabled></div>
+        </div>
+        <button class="btn" type="button" disabled>लॉगिन →</button>
+        <div class="foot">खाते नाही? नोंदणी करा</div>
+      </section>
+    </div>
+  </div>
+
+  <div class="note">
+    <div><b>नवीन आयडिया — सुटकेस इंट्रो!</b> 💼<br>
+    आधी फक्त <b>सुटकेस</b> दिसते → ती <b>उघडते</b> ✨ → तिच्यातून <b>लॉगिन टॅब्स वर येतात</b> ⬆️<br>
+    मग डॉक्टर नेहमीप्रमाणे टॅबच्या <b>मागेच</b> डोकावतो 👀 आवडल्यास app मध्ये टाकतो!</div>
+  </div>
+
+<script type="module">
+import * as THREE from 'three';
+
+const LOOP = 24;
+const wrap = document.getElementById('cardWrap');
+const loginCardEl = document.getElementById('loginCard');
+const logoEl = document.querySelector('.logo');
+const docLayer = document.getElementById('doc3d');
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+renderer.setClearColor(0x000000, 0);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.05;
+docLayer.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(45, 1, 1, 5000);
+
+scene.add(new THREE.HemisphereLight(0xffffff, 0x1a2f4a, 0.9));
+const key = new THREE.DirectionalLight(0xfff1de, 1.55);
+key.castShadow = true;
+key.shadow.mapSize.set(1024, 1024);
+key.shadow.camera.left = -260; key.shadow.camera.right = 260;
+key.shadow.camera.top = 260; key.shadow.camera.bottom = -260;
+key.shadow.camera.far = 1400;
+scene.add(key);
+const fill = new THREE.DirectionalLight(0xcfe6ff, 0.5);
+fill.position.set(-120, 60, 220); scene.add(fill);
+const rim = new THREE.DirectionalLight(0x8fd0ff, 0.7);
+rim.position.set(-160, 120, -160); scene.add(rim);
+
+const M = {
+  skin:  new THREE.MeshStandardMaterial({ color: 0xf6c89f, roughness: 0.5 }),
+  skinD: new THREE.MeshStandardMaterial({ color: 0xe0a068, roughness: 0.55 }),
+  hair:  new THREE.MeshStandardMaterial({ color: 0x6b4226, roughness: 0.65 }),
+  glass: new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.3 }),
+  coat:  new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.48 }),
+  coatS: new THREE.MeshStandardMaterial({ color: 0xd7e4f1, roughness: 0.55 }),
+  shirt: new THREE.MeshStandardMaterial({ color: 0x2f7fc4, roughness: 0.55 }),
+  tie:   new THREE.MeshStandardMaterial({ color: 0x1e4fa3, roughness: 0.5 }),
+  pants: new THREE.MeshStandardMaterial({ color: 0x2f5fb3, roughness: 0.6 }),
+  steth: new THREE.MeshStandardMaterial({ color: 0x2563eb, roughness: 0.45 }),
+  shoeW: new THREE.MeshStandardMaterial({ color: 0xeef0f2, roughness: 0.4 }),
+  sole:  new THREE.MeshStandardMaterial({ color: 0xd5dae0, roughness: 0.6 }),
+  white: new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.22 }),
+  pupil: new THREE.MeshStandardMaterial({ color: 0x1b2a3a, roughness: 0.18 }),
+  shine: new THREE.MeshBasicMaterial({ color: 0xffffff }),
+  brown: new THREE.MeshStandardMaterial({ color: 0x7a4f24, roughness: 0.6 }),
+  mouthD:new THREE.MeshStandardMaterial({ color: 0x5b2a1e, roughness: 0.7 }),
+  tongue:new THREE.MeshStandardMaterial({ color: 0xe08080, roughness: 0.6 }),
+  blush: new THREE.MeshStandardMaterial({ color: 0xf0a080, roughness: 0.7, transparent: true, opacity: 0.5 }),
+  metal: new THREE.MeshStandardMaterial({ color: 0xb8c4d0, roughness: 0.25, metalness: 0.8 }),
+  bag:   new THREE.MeshStandardMaterial({ color: 0xe8edf2, roughness: 0.5 }),
+  bagD:  new THREE.MeshStandardMaterial({ color: 0xd4dbe3, roughness: 0.55 }),
+  red:   new THREE.MeshStandardMaterial({ color: 0xdc2626, roughness: 0.45 }),
+};
+const mesh = (geo, mat, x=0, y=0, z=0) => {
+  const m = new THREE.Mesh(geo, mat); m.position.set(x, y, z); m.castShadow = true; return m;
+};
+
+/* ================= डॉक्टर मॉडेल ================= */
+const doctor = new THREE.Group(); scene.add(doctor);
+const bodyG = new THREE.Group(); doctor.add(bodyG);
+
+function makeLeg(side) {
+  const g = new THREE.Group(); g.position.set(side*11, 36, 0);
+  g.add(mesh(new THREE.CapsuleGeometry(7.5, 18, 6, 14), M.pants, 0, -13, 0));
+  const shoe = mesh(new THREE.SphereGeometry(9, 18, 14), M.shoeW, 0, -30, 4);
+  shoe.scale.set(1.05, 0.62, 1.45); g.add(shoe);
+  g.add(mesh(new THREE.BoxGeometry(17, 3, 25), M.sole, 0, -34, 4));
+  bodyG.add(g); return g;
+}
+const legL = makeLeg(-1), legR = makeLeg(1);
+
+// निळा शर्ट + टाय (फोटोप्रमाणे)
+bodyG.add(mesh(new THREE.CylinderGeometry(20, 24, 62, 20), M.shirt, 0, 70, 0));
+bodyG.add(mesh(new THREE.BoxGeometry(5.5, 10, 2.5), M.tie, 0, 102, 20));
+{
+  const tieBody = mesh(new THREE.BoxGeometry(5, 30, 2), M.tie, 0, 86, 22);
+  tieBody.rotation.x = 0.06; bodyG.add(tieBody);
+}
+// उघडा पांढरा कोट
+{
+  const coatMat = M.coat.clone(); coatMat.side = THREE.DoubleSide;
+  bodyG.add(mesh(new THREE.CylinderGeometry(28, 35, 76, 24, 1, true, 0.52, Math.PI*2 - 1.04), coatMat, 0, 74, 0));
+  for (const sx of [-1, 1]) {
+    const lapel = mesh(new THREE.BoxGeometry(8, 26, 2), M.coat, sx*14, 95, 23);
+    lapel.rotation.y = sx * -0.45; lapel.rotation.z = sx * 0.12; bodyG.add(lapel);
+  }
+  const collarMat = M.coat.clone(); collarMat.side = THREE.DoubleSide;
+  bodyG.add(mesh(new THREE.CylinderGeometry(12.5, 14, 8, 16, 1, true, Math.PI*0.7, Math.PI*1.6), collarMat, 0, 107, 0));
+  const pocket = mesh(new THREE.BoxGeometry(15, 11, 2.5), M.coat, -19, 76, 20);
+  pocket.rotation.y = 0.5; bodyG.add(pocket);
+  const pen = mesh(new THREE.CylinderGeometry(1.5, 1.5, 10, 8), M.steth, -21, 84, 21);
+  pen.rotation.z = 0.15; bodyG.add(pen);
+}
+bodyG.add(mesh(new THREE.CylinderGeometry(8, 8, 12, 16), M.skin, 0, 110, 0));
+
+function makeArm(side) {
+  const g = new THREE.Group(); g.position.set(side*31, 102, 0);
+  g.add(mesh(new THREE.CapsuleGeometry(7, 28, 6, 14), M.coat, 0, -20, 0));
+  g.add(mesh(new THREE.CylinderGeometry(7.6, 7.6, 6, 14), M.shirt, 0, -37, 0));
+  g.add(mesh(new THREE.SphereGeometry(7.2, 18, 14), M.skin, 0, -44, 0));
+  const thumb = mesh(new THREE.CapsuleGeometry(2.2, 4, 4, 8), M.skin, side*5.5, -43, 3);
+  thumb.rotation.z = side * 0.5; g.add(thumb);
+  bodyG.add(g); return g;
+}
+const armL = makeArm(-1), armR = makeArm(1);
+
+{ // मेडिकल बॅग — उजव्या हातात (फोटोप्रमाणे: त्याच्या डाव्या हातात)
+  const bag = new THREE.Group(); bag.position.set(0, -46, 3); armR.add(bag);
+  bag.add(mesh(new THREE.BoxGeometry(46, 34, 17), M.bag, 0, -19, 0));
+  bag.add(mesh(new THREE.BoxGeometry(46, 5, 17.5), M.bagD, 0, -4, 0));
+  bag.add(mesh(new THREE.TorusGeometry(10, 2.4, 10, 28), M.red, 0, -19, 8.8));
+  bag.add(mesh(new THREE.BoxGeometry(13, 4.6, 2), M.red, 0, -19, 9));
+  bag.add(mesh(new THREE.BoxGeometry(4.6, 13, 2), M.red, 0, -19, 9));
+  bag.add(mesh(new THREE.TorusGeometry(8, 2, 8, 18, Math.PI), M.metal, 0, -1, 0));
+  for (const sx of [-1, 1]) bag.add(mesh(new THREE.BoxGeometry(6, 4, 3), M.metal, sx*14, -3, 0));
+}
+
+const steth = new THREE.Group(); steth.position.set(0, 106, 4); bodyG.add(steth);
+{
+  const loop = mesh(new THREE.TorusGeometry(15, 2.6, 10, 32, Math.PI*1.5), M.steth, 0, 2, 0);
+  loop.rotation.set(1.35, 0, 2.35); steth.add(loop);
+  for (const sx of [-1, 1]) {
+    const curve = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(sx*10, 4, 2), new THREE.Vector3(sx*16, 16, -2), new THREE.Vector3(sx*19, 26, -6),
+    ]);
+    steth.add(mesh(new THREE.TubeGeometry(curve, 16, 2, 8), M.steth));
+    steth.add(mesh(new THREE.SphereGeometry(2.6, 10, 8), M.metal, sx*19, 27, -6.5));
+  }
+  for (const sx of [-1, 1]) {
+    const curve = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(sx*9, 0, 6), new THREE.Vector3(sx*12, -18, 14), new THREE.Vector3(sx*6, -32, 20),
+    ]);
+    steth.add(mesh(new THREE.TubeGeometry(curve, 24, 2.1, 8), M.steth));
+  }
+  steth.add(mesh(new THREE.SphereGeometry(3, 10, 8), M.steth, 0, -30, 19));
+  const chest = mesh(new THREE.CylinderGeometry(7, 7, 4.5, 20), M.steth, 9, -36, 20);
+  chest.rotation.x = Math.PI/2; steth.add(chest);
+  steth.add(mesh(new THREE.TorusGeometry(7, 1.2, 8, 24), M.metal, 9, -36, 22.4));
+  const dia = mesh(new THREE.CylinderGeometry(5.4, 5.4, 1, 18),
+    new THREE.MeshStandardMaterial({ color: 0xdff7f2, roughness: 0.3 }), 9, -36, 22.8);
+  dia.rotation.x = Math.PI/2; steth.add(dia);
+}
+
+const headG = new THREE.Group(); headG.position.set(0, 118, 0); headG.scale.setScalar(1.12); bodyG.add(headG);
+headG.add(mesh(new THREE.SphereGeometry(24, 36, 28), M.skin, 0, 16, 0));
+for (const sx of [-1, 1]) headG.add(mesh(new THREE.SphereGeometry(3.6, 12, 10), M.skinD, sx*23.5, 14, 0));
+{ // तपकिरी केस — quiff (फोटोप्रमाणे)
+  const base = mesh(new THREE.SphereGeometry(25, 28, 20), M.hair, 0, 26, -3);
+  base.scale.set(1, 0.72, 1); headG.add(base);
+  for (const sx of [-1, 1]) {
+    const side = mesh(new THREE.SphereGeometry(10, 14, 12), M.hair, sx*20, 26, 2);
+    side.scale.set(0.7, 1, 0.9); headG.add(side);
+  }
+  const tufts = [[-10, 44, 7, -0.3], [-3.5, 46, 8, -0.28], [3.5, 46, 8, 0.28], [10, 44, 7, 0.3]];
+  for (const [tx, ty, tz, rz] of tufts) {
+    const tuft = mesh(new THREE.SphereGeometry(7, 14, 12), M.hair, tx, ty, tz);
+    tuft.scale.set(1, 2.0, 1.1); tuft.rotation.z = rz; tuft.rotation.x = -0.28; headG.add(tuft);
+  }
+  const back = mesh(new THREE.SphereGeometry(12, 14, 12), M.hair, 0, 30, -16);
+  back.scale.set(1.4, 1, 0.8); headG.add(back);
+}
+headG.add(mesh(new THREE.SphereGeometry(3.4, 14, 12), M.skinD, 0, 12, 23.4));
+const eyeGroups = [];
+for (const sx of [-1, 1]) {
+  const eg = new THREE.Group(); eg.position.set(sx*9.5, 18, 0); headG.add(eg);
+  eg.add(mesh(new THREE.SphereGeometry(6.2, 20, 16), M.white, 0, 0, 20));
+  const pupil = mesh(new THREE.SphereGeometry(2.8, 14, 12), M.pupil, 0, 0, 24.6);
+  eg.add(pupil);
+  const sh = new THREE.Mesh(new THREE.SphereGeometry(1.1, 8, 8), M.shine);
+  sh.position.set(1.1, 1.1, 26.8); eg.add(sh);
+  const brow = mesh(new THREE.BoxGeometry(12, 3, 2.6), M.brown, 0, 9.5, 19.5);
+  brow.rotation.z = sx * -0.08; eg.add(brow);
+  eyeGroups.push({ eg, pupil, brow, sx, baseRZ: sx * -0.08, baseY: 9.5 });
+}
+{ // काळा चष्मा — rounded rectangle (फोटोप्रमाणे)
+  function rrShape(w, h, r) {
+    const s = new THREE.Shape(), x = -w/2, y = -h/2;
+    s.moveTo(x+r, y);
+    s.lineTo(x+w-r, y); s.quadraticCurveTo(x+w, y, x+w, y+r);
+    s.lineTo(x+w, y+h-r); s.quadraticCurveTo(x+w, y+h, x+w-r, y+h);
+    s.lineTo(x+r, y+h); s.quadraticCurveTo(x, y+h, x, y+h-r);
+    s.lineTo(x, y+r); s.quadraticCurveTo(x, y, x+r, y);
+    return s;
+  }
+  for (const sx of [-1, 1]) {
+    const lens = rrShape(18, 15, 4.5);
+    lens.holes.push(new THREE.Path(rrShape(14, 11, 3).getPoints(10)));
+    const frame = mesh(new THREE.ExtrudeGeometry(lens, { depth: 1.8, bevelEnabled: false }), M.glass, sx*9.8, 19, 21);
+    headG.add(frame);
+    headG.add(mesh(new THREE.BoxGeometry(1.8, 1.8, 20), M.glass, sx*18.5, 19, 12));
+  }
+  headG.add(mesh(new THREE.BoxGeometry(5.5, 2.2, 1.8), M.glass, 0, 20, 21.4));
+}
+{ // दाढी + मिशा (फोटोप्रमाणे)
+  const beard = mesh(new THREE.TorusGeometry(16, 5, 10, 26, Math.PI), M.hair, 0, 10, 10);
+  beard.rotation.z = Math.PI; beard.rotation.x = -0.15; headG.add(beard);
+  for (const sx of [-1, 1]) {
+    const mo = mesh(new THREE.CapsuleGeometry(2.2, 5, 4, 8), M.hair, sx*4.5, 8.5, 22);
+    mo.rotation.z = Math.PI/2 + sx*0.25; headG.add(mo);
+  }
+  const chin = mesh(new THREE.SphereGeometry(5, 12, 10), M.hair, 0, -3, 19);
+  chin.scale.set(1.4, 1, 0.8); headG.add(chin);
+}
+// मोठं हसू — दातांसह (फोटोप्रमाणे)
+const mouthOpen = new THREE.Group(); mouthOpen.position.set(0, 3, 21); headG.add(mouthOpen);
+{
+  const inner = mesh(new THREE.SphereGeometry(7, 18, 14), M.mouthD, 0, 0, 0);
+  inner.scale.set(1.25, 0.95, 0.55); mouthOpen.add(inner);
+  mouthOpen.add(mesh(new THREE.BoxGeometry(11, 3.6, 2), M.white, 0, 3.4, 1.2));
+  const tongue = mesh(new THREE.SphereGeometry(4, 14, 12), M.tongue, 0, -2.5, 1.5);
+  tongue.scale.set(1.2, 0.55, 0.8); mouthOpen.add(tongue);
+}
+const mouthO = mesh(new THREE.TorusGeometry(3.8, 1.9, 10, 20), M.mouthD, 0, 3, 21);
+mouthO.visible = false; headG.add(mouthO);
+const mouths = [mouthOpen, mouthO];
+let lastMouth = 0, mouthPopT = -10;
+for (const sx of [-1, 1]) {
+  const b = mesh(new THREE.SphereGeometry(3, 12, 10), M.blush, sx*14, 10, 18.5);
+  b.scale.set(1, 0.7, 0.5); headG.add(b);
+}
+{
+  const sh = new THREE.Mesh(new THREE.PlaneGeometry(140, 46), new THREE.ShadowMaterial({ opacity: 0.3 }));
+  sh.rotation.x = -Math.PI/2; sh.position.y = 1; sh.receiveShadow = true; doctor.add(sh);
+}
+
+
+/* ================= सुटकेस (इंट्रो) ================= */
+const SM = {
+  leather:  new THREE.MeshStandardMaterial({ color: 0x8a5a2b, roughness: 0.75 }),
+  leatherL: new THREE.MeshStandardMaterial({ color: 0x9c6a35, roughness: 0.7 }),
+  strap:    new THREE.MeshStandardMaterial({ color: 0x4e3016, roughness: 0.8 }),
+  gold:     new THREE.MeshStandardMaterial({ color: 0xd9a527, roughness: 0.35, metalness: 0.7 }),
+  inner:    new THREE.MeshStandardMaterial({ color: 0x2b1c10, roughness: 0.9 }),
+};
+const suit = new THREE.Group(); scene.add(suit);
+let lidPivot, latchL, latchR, suitGlow, suitBaseY = 0;
+const sparkles = [];
+{
+  const Wd = 176, Ht = 100, Dp = 72;
+  suit.add(mesh(new THREE.BoxGeometry(Wd, Ht, Dp), SM.leather, 0, 0, 0));
+  for (const sx of [-1, 1]) suit.add(mesh(new THREE.BoxGeometry(15, Ht + 3, Dp + 3), SM.strap, sx*52, 0, 0));
+  for (const sx of [-1, 1]) {
+    const l = mesh(new THREE.BoxGeometry(20, 26, 6), SM.gold, sx*52, 26, Dp/2 + 2);
+    if (sx < 0) latchL = l; else latchR = l;
+    suit.add(l);
+  }
+  lidPivot = new THREE.Group(); lidPivot.position.set(0, Ht/2, -Dp/2); suit.add(lidPivot);
+  lidPivot.add(mesh(new THREE.BoxGeometry(Wd, 30, Dp), SM.leatherL, 0, 15, Dp/2));
+  lidPivot.add(mesh(new THREE.BoxGeometry(Wd - 26, 5, Dp - 26), SM.inner, 0, 1.5, Dp/2));
+  const hg = new THREE.Group(); hg.position.set(0, 30, Dp/2); lidPivot.add(hg);
+  const hd = new THREE.Mesh(new THREE.TorusGeometry(15, 4.5, 10, 22, Math.PI), SM.strap);
+  hd.scale.z = 0.7; hg.add(hd);
+  const sh = new THREE.Mesh(new THREE.CircleGeometry(105, 28), new THREE.ShadowMaterial({ opacity: 0.32 }));
+  sh.rotation.x = -Math.PI/2; sh.position.y = -Ht/2 - 1; suit.add(sh);
+  const cv = document.createElement('canvas'); cv.width = cv.height = 128;
+  const g2 = cv.getContext('2d'), gr = g2.createRadialGradient(64, 64, 4, 64, 64, 64);
+  gr.addColorStop(0, 'rgba(252,211,77,.55)'); gr.addColorStop(1, 'rgba(252,211,77,0)');
+  g2.fillStyle = gr; g2.fillRect(0, 0, 128, 128);
+  suitGlow = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(cv), transparent: true, depthWrite: false, opacity: 0.4 }));
+  suitGlow.scale.set(320, 180, 1); suitGlow.position.y = -30; suit.add(suitGlow);
+}
+let sparkMat = null;
+function spawnSparkles() {
+  if (!sparkMat) sparkMat = new THREE.SpriteMaterial({ color: 0xfde68a, transparent: true, depthWrite: false });
+  for (let i = 0; i < 16; i++) {
+    const s = new THREE.Sprite(sparkMat.clone());
+    s.position.set(suit.position.x + (Math.random()-0.5)*150, suit.position.y + 55, (Math.random()-0.5)*50);
+    s.scale.setScalar(5 + Math.random()*9);
+    s.userData = { vx: (Math.random()-0.5)*36, vy: 55 + Math.random()*70, life: 0, max: 0.8 + Math.random()*0.6 };
+    scene.add(s); sparkles.push(s);
+  }
+}
+function updateSparkles(dt) {
+  for (let i = sparkles.length - 1; i >= 0; i--) {
+    const s = sparkles[i], u = s.userData;
+    u.life += dt;
+    s.position.x += u.vx*dt; s.position.y += u.vy*dt;
+    s.material.opacity = Math.max(0, 1 - u.life/u.max);
+    if (u.life >= u.max) { scene.remove(s); s.material.dispose(); sparkles.splice(i, 1); }
+  }
+}
+function placeSuitcase() {
+  const mouthScreenY = Met.cardTop + Met.cardH - 88;
+  suit.position.set(Met.CX, Met.H - (mouthScreenY + 50), 0);
+  suitBaseY = suit.position.y;
+}
+
+/* ---------- camera / metrics ---------- */
+let Met = { W: 300, H: 600, cardTop: 200, cardH: 380, CX: 150 };
+let cardShiftY = 0;
+function measure() {
+  const r = wrap.getBoundingClientRect(), c = loginCardEl.getBoundingClientRect();
+  Met = { W: r.width, H: r.height, cardTop: (c.top - r.top) - cardShiftY, cardH: c.height, CX: r.width/2 };
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.setSize(Met.W, Met.H, false);
+  camera.aspect = Met.W / Met.H;
+  const dist = (Met.H/2) / Math.tan(THREE.MathUtils.degToRad(22.5));
+  camera.position.set(Met.CX, Met.H/2, dist);
+  camera.lookAt(Met.CX, Met.H/2, 0);
+  camera.updateProjectionMatrix();
+  key.position.set(Met.CX + 90, 230, 140);
+  key.target.position.set(Met.CX, 60, 0); key.target.updateMatrixWorld();
+  placeSuitcase();
+}
+
+/* ---------- choreography ---------- */
+function buildKeys() {
+  const { W, cardTop, cardH, CX } = Met;
+  const topY = cardTop + 92, sideY = cardTop + cardH*0.35,
+        midY = cardTop + cardH*0.5, botY = cardTop + cardH + 58;
+  const P = (t, x, y, o={}) => Object.assign(
+    { t, x, y, s: 1, ry: 0, rx: 0, rz: 0, hry: 0, hrz: 0, hrx: 0,
+      brow: 0, tilt: 0, wide: 0, mouth: 0 }, o);
+  return [
+    P(0,    CX, topY),
+    P(1.2,  CX, topY, { hry: -0.45, tilt: 0.25 }),
+    P(2.4,  CX, topY, { hry: 0.45, tilt: 0.25 }),
+    P(3.4,  CX, topY + 34),
+    P(4.4,  CX, midY),
+    P(5.0,  -8, sideY, { hry: 0.3, brow: 0.6, wide: 0.15 }),
+    P(6.4,  -8, sideY, { hry: 0.3, brow: 0.6, wide: 0.15 }),
+    P(7.6,  -8, sideY, { hry: 0.25, brow: 0.7, wide: 0.2 }),
+    P(8.2,  CX, midY),
+    P(9.0,  W+8, sideY, { hry: -0.2, brow: 1, wide: 0.35, mouth: 1 }),
+    P(11.0, W+8, sideY, { hry: 0, brow: 0.5, wide: 0.1, mouth: 0 }),
+    P(12.0, CX, midY),
+    P(12.8, CX+95, topY, { hrz: 0.2, brow: 0.5 }),
+    P(14.8, CX+95, topY, { hrz: 0.2, hry: -0.3, brow: 0.5 }),
+    P(15.6, CX, topY + 40),
+    P(16.4, CX, cardTop + cardH + 30),
+    P(17.2, 46, botY, { hrz: -0.2, hry: 0.3, brow: 0.4 }),
+    P(19.0, 46, botY, { hrz: -0.2, hry: -0.25, brow: 0.4 }),
+    P(19.8, CX, cardTop + cardH + 30),
+    P(20.6, W-46, botY, { hry: -0.3, brow: 0.7, wide: 0.2 }),
+    P(22.4, W-46, botY, { hry: -0.3, brow: 0.7, wide: 0.2 }),
+    P(23.0, CX, midY),
+    P(24.0, CX, topY),
+  ];
+}
+let KEYS = [];
+const NUMK = ['x','y','s','ry','rx','rz','hry','hrz','hrx','brow','tilt','wide'];
+function poseAt(t) {
+  let i = 0;
+  while (i < KEYS.length-2 && t >= KEYS[i+1].t) i++;
+  const a = KEYS[i], b = KEYS[i+1];
+  const span = b.t - a.t, f = span <= 0 ? 0 : Math.min(1, Math.max(0, (t-a.t)/span));
+  const e = f*f*(3-2*f), P = {};
+  for (const k of NUMK) P[k] = a[k] + (b[k]-a[k])*e;
+  P.mouth = f < 0.5 ? a.mouth : b.mouth;
+  return P;
+}
+const bump = (t, a, b, c, d) => {
+  const s = (x, p, q) => { const f = Math.min(1, Math.max(0, (x-p)/(q-p))); return f*f*(3-2*f); };
+  return s(t, a, b) * (1 - s(t, c, d));
+};
+
+/* ---------- loop ---------- */
+const clock = new THREE.Clock();
+let prevX = null;
+measure(); KEYS = buildKeys();
+window.addEventListener('resize', () => { measure(); KEYS = buildKeys(); });
+
+/* ---------- suitcase intro ---------- */
+const INTRO = 5.4;
+let introDone = false, sparkFired = false;
+loginCardEl.style.opacity = '0';
+loginCardEl.style.pointerEvents = 'none';
+logoEl.style.opacity = '0';
+loginCardEl.style.transformOrigin = '50% 100%';
+doctor.visible = false;
+const sstep = (x, a, b) => { const f = Math.min(1, Math.max(0, (x-a)/(b-a))); return f*f*(3-2*f); };
+function finishIntro() {
+  loginCardEl.style.transform = ''; loginCardEl.style.opacity = ''; loginCardEl.style.pointerEvents = '';
+  logoEl.style.opacity = '';
+  cardShiftY = 0;
+  suit.position.y = suitBaseY; suit.rotation.z = 0;
+  lidPivot.rotation.x = 0;
+  latchL.scale.setScalar(1); latchR.scale.setScalar(1);
+  latchL.rotation.x = 0; latchR.rotation.x = 0;
+  suitGlow.material.opacity = 0.22;
+  doctor.visible = true;
+  measure(); KEYS = buildKeys();
+}
+function introTick(el, dt) {
+  const bnc = 1 - sstep(el, 0, 1.0);
+  suit.position.y = suitBaseY - Math.abs(Math.sin(el*Math.PI*3))*12*bnc;
+  suit.rotation.z = 0.05*Math.sin(el*18)*bnc;
+  const pop = sstep(el, 1.0, 1.25) * (1 - sstep(el, 1.35, 1.6));
+  latchL.scale.setScalar(1 + 0.6*pop); latchR.scale.setScalar(1 + 0.6*pop);
+  latchL.rotation.x = pop*0.6; latchR.rotation.x = pop*0.6;
+  const openE = sstep(el, 1.5, 2.6), closeE = sstep(el, 3.9, 4.7);
+  lidPivot.rotation.x = -1.9*(openE*(1 - closeE));
+  if (el > 1.7 && !sparkFired) { sparkFired = true; spawnSparkles(); }
+  updateSparkles(dt);
+  const rf = sstep(el, 2.5, 3.7), c1 = 1.70158, c3 = c1 + 1;
+  const e = 1 + c3*Math.pow(rf-1, 3) + c1*Math.pow(rf-1, 2);
+  cardShiftY = (1 - e)*170;
+  loginCardEl.style.transform = 'translateY(' + cardShiftY.toFixed(1) + 'px) scale(' + (0.55 + 0.45*e).toFixed(3) + ')';
+  loginCardEl.style.opacity = Math.min(1, e*1.6).toFixed(2);
+  logoEl.style.opacity = Math.min(1, e*1.6).toFixed(2);
+  suitGlow.material.opacity = 0.4 + 0.25*Math.sin(el*6)*(1 - sstep(el, 4.4, 5.2));
+  renderer.render(scene, camera);
+}
+
+function doctorTick(el, dt) {
+  const t = (el - INTRO) % LOOP;
+  const P = poseAt(t);
+
+  const vx = prevX === null ? 0 : (P.x - prevX) / Math.max(dt, 1/240);
+  prevX = P.x;
+  const wob = Math.min(Math.abs(vx)/260, 1);
+
+  const bobY = wob*4*Math.abs(Math.sin(el*10));
+  doctor.position.set(P.x, Met.H - P.y + bobY, 0);
+  doctor.scale.setScalar(P.s * 0.92);
+  doctor.rotation.set(P.rx, P.ry, P.rz + wob*0.05*Math.sin(el*10));
+
+  bodyG.scale.y = 1 + 0.012*Math.sin(el*2*Math.PI/2.6);
+  bodyG.position.y = 1.5*Math.sin(el*2*Math.PI/2.6 + 0.6);
+  headG.rotation.set(P.hrx, P.hry, P.hrz);
+
+  // डोळे
+  const bp = el % 4.2, blinkY = bp < 0.13 ? 0.12 : 1;
+  const es = 1 + P.wide*0.4;
+  for (const e of eyeGroups) {
+    e.eg.scale.set(es, es*blinkY, 1);
+    e.pupil.position.x = THREE.MathUtils.clamp(P.hry*9, -3, 3);
+    e.pupil.position.y = THREE.MathUtils.clamp(-P.hrx*9, -2.5, 2.5);
+    e.brow.position.y = e.baseY + P.brow*3;
+    e.brow.rotation.z = e.baseRZ + e.sx * P.tilt * -1;
+  }
+  // तोंड
+  const mi = Math.round(P.mouth);
+  if (mi !== lastMouth) { lastMouth = mi; mouthPopT = el; }
+  mouths.forEach((m, i) => { m.visible = i === mi; });
+  mouths[mi].scale.setScalar(1 + 0.35*Math.exp(-(el-mouthPopT)*6));
+
+  // हात हलवणे — फक्त डोकावताना
+  const wL = bump(t, 6.2, 6.5, 7.1, 7.4), wR = bump(t, 21.0, 21.3, 21.9, 22.2);
+  armL.rotation.x = 0.06*Math.sin(el*1.7);
+  armR.rotation.x = 0.06*Math.sin(el*1.7 + 1);
+  armL.rotation.z = -wL*(2.2 + Math.sin(el*13)*0.45);
+  armR.rotation.z =  wR*(2.2 + Math.sin(el*13)*0.45);
+
+  steth.rotation.x = Math.sin(el*2*Math.PI/3.4)*0.07;
+  steth.rotation.z = Math.cos(el*2*Math.PI/3.4)*0.05;
+
+  renderer.render(scene, camera);
+}
+function tick() {
+  requestAnimationFrame(tick);
+  const dt = Math.min(clock.getDelta(), 0.1);
+  const el = clock.elapsedTime;
+  if (el < INTRO) introTick(el, dt);
+  else {
+    if (!introDone) { introDone = true; finishIntro(); }
+    doctorTick(el, dt);
+  }
+}
+tick();
+</script>
+</body>
+</html>
