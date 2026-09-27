@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Preview — Pulse Rings Background</title>
+<link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Mukta', sans-serif; background: #f8fafc; color: #0f172a; min-height: 100vh; }
+
+  /* ===== Pulse rings background (Option 4) ===== */
+  .rings { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+  .ring {
+    position: absolute; left: 50%; top: 30%;
+    width: 140px; height: 140px; margin: -70px 0 0 -70px;
+    border: 2px solid rgba(26, 74, 114, 0.16);
+    border-radius: 50%;
+    animation: ringExpand 7s ease-out infinite;
+  }
+  .ring:nth-child(2) { animation-delay: 1.75s; border-color: rgba(243, 156, 18, 0.14); }
+  .ring:nth-child(3) { animation-delay: 3.5s; }
+  .ring:nth-child(4) { animation-delay: 5.25s; border-color: rgba(16, 122, 87, 0.13); }
+  @keyframes ringExpand {
+    0%   { transform: scale(0.25); opacity: 0.9; }
+    70%  { opacity: 0.35; }
+    100% { transform: scale(5.2); opacity: 0; }
+  }
+  .ring-soft {
+    position: absolute; left: 50%; top: 78%;
+    width: 100px; height: 100px; margin: -50px 0 0 -50px;
+    border: 2px solid rgba(26, 74, 114, 0.10);
+    border-radius: 50%;
+    animation: ringExpand 9s ease-out infinite;
+  }
+  .ring-soft:nth-child(6) { animation-delay: 3s; }
+  .ring-soft:nth-child(7) { animation-delay: 6s; }
+
+  .app { position: relative; z-index: 1; max-width: 480px; margin: 0 auto; min-height: 100vh; }
+
+  /* ===== App header (matches real app) ===== */
+  .hdr {
+    background: linear-gradient(135deg, #1a4a72 0%, #1a4a72 55%, #0f2f4d 100%);
+    color: #fff; border-radius: 0 0 22px 22px;
+    padding: 18px 16px 20px; box-shadow: 0 4px 14px rgba(15,47,77,.25);
+  }
+  .hdr-top { display: flex; align-items: center; gap: 12px; }
+  .badge {
+    width: 46px; height: 46px; border-radius: 50%;
+    background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.25);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; flex-shrink: 0;
+  }
+  .hdr h1 { font-size: 19px; font-weight: 800; letter-spacing: .3px; }
+  .hdr p { font-size: 12px; color: #cbd5e1; font-weight: 500; }
+  .month-pill {
+    margin-top: 12px; display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.25);
+    border-radius: 10px; padding: 5px 12px; font-size: 12px; font-weight: 700; color: #fcd34d;
+  }
+
+  /* ===== Tabs ===== */
+  .tabs {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px;
+    background: #fff; border: 1px solid #e2e8f0; border-radius: 14px;
+    padding: 6px; margin: 14px 12px 0; box-shadow: 0 1px 3px rgba(0,0,0,.05);
+  }
+  .tab { text-align: center; font-size: 13px; font-weight: 700; color: #64748b; padding: 9px 4px; border-radius: 10px; }
+  .tab.active { background: linear-gradient(90deg, #1a4a72, #236089); color: #fff; box-shadow: 0 2px 6px rgba(26,74,114,.3); }
+
+  /* ===== Cards ===== */
+  .card {
+    background: #fff; border: 1px solid #e8eef4; border-radius: 16px;
+    margin: 12px; padding: 14px; box-shadow: 0 1px 4px rgba(15,47,77,.06);
+  }
+  .card h3 { font-size: 14px; font-weight: 800; color: #1a4a72; margin-bottom: 10px; }
+  .stat { display: flex; justify-content: space-between; font-size: 13px; padding: 7px 0; border-bottom: 1px dashed #eef2f6; }
+  .stat:last-child { border-bottom: none; }
+  .stat b { color: #1a4a72; }
+  .note-bar {
+    margin: 16px 12px 24px; background: #1a4a72; color: #fff; border-radius: 14px;
+    padding: 12px 14px; font-size: 12.5px; font-weight: 600; text-align: center; line-height: 1.6;
+  }
+  .note-bar span { color: #fcd34d; }
+</style>
+</head>
+<body>
+  <div class="rings" aria-hidden="true">
+    <div class="ring"></div><div class="ring"></div><div class="ring"></div><div class="ring"></div>
+    <div class="ring-soft"></div><div class="ring-soft"></div><div class="ring-soft"></div>
+  </div>
+
+  <div class="app">
+    <div class="hdr">
+      <div class="hdr-top">
+        <div class="badge">🩺</div>
+        <div>
+          <h1>आरोग्य सेवक</h1>
+          <p>स्मार्ट रिपोर्टिंग • उपकेंद्र देहरे</p>
+        </div>
+      </div>
+      <div class="month-pill">📅 अहवाल कालावधी: सप्टेंबर 2026</div>
+    </div>
+
+    <div class="tabs">
+      <div class="tab active">नोंदणी</div>
+      <div class="tab">रुग्ण नोंद</div>
+      <div class="tab">अहवाल</div>
+    </div>
+
+    <div class="card">
+      <h3>१. कंटेनर सर्वेक्षण (साथरोग नियंत्रण)</h3>
+      <div class="stat"><span>तपासलेली घरे</span><b>१२४</b></div>
+      <div class="stat"><span>दूषित (पॉझिटिव्ह) घरे</span><b>६</b></div>
+      <div class="stat"><span>तपासलेली भांडी / कंटेनर</span><b>३४०</b></div>
+      <div class="stat"><span>अबेट टाकलेली भांडी</span><b>१८</b></div>
+    </div>
+
+    <div class="card">
+      <h3>२. पाणी गुणवत्ता व TCL</h3>
+      <div class="stat"><span>पाणी नमुने (जैविक)</span><b>४ नमुने</b></div>
+      <div class="stat"><span>TCL पावडर वापर</span><b>२.५ किलो</b></div>
+      <div class="stat"><span>क्लोरीन OT चाचणी</span><b>१२ चाचण्या</b></div>
+    </div>
+
+    <div class="note-bar">
+      हा फक्त <span>preview</span> आहे — पांढऱ्या पार्श्वभूमीवर हलकी <span>pulse rings</span> ॲनिमेशन.<br>
+      आवडली तर सांगा, app मध्ये कायमची टाकतो 👍
+    </div>
+  </div>
+</body>
+</html>
