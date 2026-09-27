@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Preview — Animated Doctor on Login</title>
+<title>Preview — 3D Doctor on Login</title>
 <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   html, body { margin: 0; padding: 0; }
@@ -12,101 +12,164 @@
     background: #0b1f33; color: #fff;
     min-height: 100vh; overflow-x: hidden;
   }
-  /* पार्श्वभूमी blobs */
   .bg-fx { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
-  .bg-fx i { position: absolute; border-radius: 50%; filter: blur(70px); opacity: .5; }
-  .bg-fx i:nth-child(1) { width: 300px; height: 300px; background: #0d9488; top: -80px; left: -80px; opacity: .18; }
+  .bg-fx i { position: absolute; border-radius: 50%; filter: blur(70px); }
+  .bg-fx i:nth-child(1) { width: 300px; height: 300px; background: #0d9488; top: -80px; left: -80px; opacity: .16; }
   .bg-fx i:nth-child(2) { width: 340px; height: 340px; background: #1a4a72; top: 35%; right: -110px; opacity: .35; }
-  .bg-fx i:nth-child(3) { width: 280px; height: 280px; background: #b45309; bottom: -90px; left: 25%; opacity: .16; }
+  .bg-fx i:nth-child(3) { width: 280px; height: 280px; background: #b45309; bottom: -90px; left: 25%; opacity: .14; }
+
+  /* कॅमेरा-जवळ धूळ — depth साठी */
+  .dust { position: fixed; border-radius: 50%; background: #fff; filter: blur(3px);
+    opacity: .1; z-index: 20; pointer-events: none; animation: dustDrift linear infinite; }
+  @keyframes dustDrift {
+    from { transform: translate(-10vw, 12vh); } to { transform: translate(110vw, -14vh); }
+  }
+  /* स्क्रीनची काच */
+  .glass { position: fixed; inset: 0; z-index: 30; pointer-events: none;
+    background: linear-gradient(115deg, transparent 42%, rgba(255,255,255,.055) 47%, transparent 54%); }
 
   .stage { position: relative; z-index: 1; max-width: 400px; margin: 0 auto; padding: 84px 16px 20px; }
 
-  /* ===== Doctor — main path animation (26s loop) ===== */
+  /* ===== Doctor — 3D path (30s loop) ===== */
   .doc-move {
     position: absolute; left: 50%; top: 0; width: 108px; z-index: 4;
     transform: translate(-50%, -58px);
-    filter: drop-shadow(0 8px 12px rgba(0,0,0,.4));
-    animation: docPath 26s ease-in-out infinite;
+    animation: docPath 30s ease-in-out infinite;
   }
   @keyframes docPath {
-    0%, 10%   { left: 50%; transform: translate(-50%,-58px) scale(1); z-index: 4; }
-    16%, 20%  { left: -72px; transform: translate(0,150px) scale(1); z-index: 6; }
-    27%       { left: -26px; transform: translate(0,158px) scale(1.14); z-index: 6; }
-    33%       { left: -72px; transform: translate(0,150px) scale(1); z-index: 6; }
-    36%       { left: 50%; transform: translate(-50%,90px) scale(1); z-index: 4; }
-    41%, 45%  { left: calc(100% - 36px); transform: translate(0,150px) scale(1); z-index: 6; }
-    51%       { left: calc(100% - 82px); transform: translate(0,158px) scale(1.14); z-index: 6; }
-    57%       { left: calc(100% - 36px); transform: translate(0,150px) scale(1); z-index: 6; }
-    60%       { left: 50%; transform: translate(-50%,90px) scale(1); z-index: 4; }
-    65%, 76%  { left: 50%; transform: translate(-50%,-58px) scale(1); z-index: 4; }
-    79%, 88%  { left: 50%; transform: translate(-50%,14px) scale(1); z-index: 4; }
-    94%, 100% { left: 50%; transform: translate(-50%,-58px) scale(1); z-index: 4; }
+    0%, 8%    { left: 50%; transform: translate(-50%,-58px) scale(1); z-index: 4; filter: blur(1.2px); }
+    13%, 17%  { left: -72px; transform: translate(0,150px) scale(1.02); z-index: 6; filter: blur(0); }
+    23%       { left: -26px; transform: translate(0,158px) scale(1.16); z-index: 6; filter: blur(0); }
+    26%       { left: -72px; transform: translate(0,150px) scale(1.02); z-index: 6; filter: blur(0); }
+    30%       { left: 50%; transform: translate(-50%,90px) scale(.96); z-index: 4; filter: blur(1.5px); }
+    34%, 38%  { left: calc(100% - 36px); transform: translate(0,150px) scale(1.02); z-index: 6; filter: blur(0); }
+    42%       { left: calc(100% - 82px); transform: translate(0,158px) scale(1.16); z-index: 6; filter: blur(0); }
+    45%       { left: 50%; transform: translate(-50%,90px) scale(.96); z-index: 4; filter: blur(1.5px); }
+    48%, 56%  { left: 50%; transform: translate(-50%,55px) scale(1.75); z-index: 8; filter: blur(0); }
+    59%, 68%  { left: 50%; transform: translate(-50%,-58px) scale(1); z-index: 4; filter: blur(1.2px); }
+    71%, 82%  { left: 50%; transform: translate(-50%,14px) scale(1); z-index: 4; filter: blur(1.2px); }
+    87%, 100% { left: 50%; transform: translate(-50%,-58px) scale(1); z-index: 4; filter: blur(1.2px); }
   }
-  .doc-bob { animation: bob 2.6s ease-in-out infinite; position: relative; }
+  .doc-bob { animation: bob 2.6s ease-in-out infinite; position: relative;
+    filter: drop-shadow(0 10px 14px rgba(0,0,0,.45)); }
   @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
 
-  /* SVG part animations */
-  .doc-head { transform-box: fill-box; transform-origin: 50% 82%; animation: headLook 26s ease-in-out infinite; }
+  /* जमिनीवरची सावली — अंतरानुसार बदलते */
+  .doc-shadow {
+    position: absolute; bottom: -4px; left: 50%; width: 84px; height: 16px; margin-left: -42px;
+    background: radial-gradient(ellipse, rgba(0,0,0,.5) 0%, transparent 70%);
+    border-radius: 50%; animation: shadowSize 30s ease-in-out infinite;
+  }
+  @keyframes shadowSize {
+    0%, 8%    { transform: scale(.55); opacity: .22; }
+    13%, 26%  { transform: scale(1); opacity: .42; }
+    30%       { transform: scale(.5); opacity: .18; }
+    34%, 45%  { transform: scale(1); opacity: .42; }
+    48%, 56%  { transform: scale(1.15); opacity: .5; }
+    59%, 68%  { transform: scale(.55); opacity: .22; }
+    71%, 82%  { transform: scale(.4); opacity: .12; }
+    87%, 100% { transform: scale(.55); opacity: .22; }
+  }
+
+  /* काचेवर टॅप ripple */
+  .ripple {
+    position: absolute; left: calc(50% + 42px); top: 238px; width: 22px; height: 22px; margin: -11px;
+    border: 3px solid rgba(255,255,255,.75); border-radius: 50%; opacity: 0; z-index: 9; pointer-events: none;
+  }
+  .r1 { animation: ripA 30s ease-out infinite; }
+  .r2 { animation: ripB 30s ease-out infinite; }
+  @keyframes ripA {
+    0%, 48.6% { opacity: 0; transform: scale(.3); }
+    49.2%     { opacity: .95; transform: scale(.3); }
+    52%       { opacity: 0; transform: scale(3.4); }
+    100%      { opacity: 0; transform: scale(3.4); }
+  }
+  @keyframes ripB {
+    0%, 52.6% { opacity: 0; transform: scale(.3); }
+    53.2%     { opacity: .95; transform: scale(.3); }
+    56%       { opacity: 0; transform: scale(3.4); }
+    100%      { opacity: 0; transform: scale(3.4); }
+  }
+
+  /* SVG parts */
+  .doc-head { transform-box: fill-box; transform-origin: 50% 82%; animation: headLook 30s ease-in-out infinite; }
   @keyframes headLook {
     0%        { transform: rotate(-7deg); }
-    5%        { transform: rotate(7deg); }
-    10%, 16%  { transform: rotate(-7deg); }
-    20%       { transform: rotate(0deg); }
-    24%, 30%  { transform: rotate(13deg) translateX(3px); }
-    33%, 40%  { transform: rotate(0deg); }
-    45%       { transform: rotate(0deg); }
-    48%, 54%  { transform: rotate(-13deg) translateX(-3px); }
-    57%, 63%  { transform: rotate(0deg); }
-    68%       { transform: rotate(8deg); }
-    72%       { transform: rotate(-8deg); }
-    76%, 100% { transform: rotate(0deg); }
+    4%        { transform: rotate(7deg); }
+    8%, 12%   { transform: rotate(-7deg); }
+    16%, 22%  { transform: rotate(0deg); }
+    23%, 26%  { transform: rotate(13deg) translateX(3px); }
+    30%, 36%  { transform: rotate(0deg); }
+    40%, 42%  { transform: rotate(-13deg) translateX(-3px); }
+    45%, 47%  { transform: rotate(0deg); }
+    49%, 51%  { transform: rotate(-7deg); }
+    52%, 54%  { transform: rotate(7deg); }
+    56%, 66%  { transform: rotate(0deg); }
+    70%       { transform: rotate(8deg); }
+    74%       { transform: rotate(-8deg); }
+    78%, 100% { transform: rotate(0deg); }
   }
-  .pupil { transform-box: fill-box; transform-origin: center; animation: pupilLook 26s ease-in-out infinite; }
+  .pupil { transform-box: fill-box; transform-origin: center; animation: pupilLook 30s ease-in-out infinite; }
   @keyframes pupilLook {
-    0%        { transform: translate(-2.4px, 0); }
-    5%        { transform: translate(2.4px, 0); }
-    10%, 20%  { transform: translate(0, 0); }
-    24%, 33%  { transform: translate(0, 2.6px); }
-    36%, 44%  { transform: translate(0, 0); }
-    48%, 57%  { transform: translate(0, 2.6px); }
-    60%, 64%  { transform: translate(0, 0); }
-    68%       { transform: translate(-2.4px, 0); }
-    72%       { transform: translate(2.4px, 0); }
-    76%, 100% { transform: translate(0, 0); }
+    0%        { transform: translate(-2.4px, 0) scale(1); }
+    4%        { transform: translate(2.4px, 0) scale(1); }
+    8%, 22%   { transform: translate(0, 0) scale(1); }
+    23%, 26%  { transform: translate(0, 2.6px) scale(1); }
+    30%, 44%  { transform: translate(0, 0) scale(1); }
+    48%, 56%  { transform: translate(0, 1px) scale(1.35); }
+    59%, 68%  { transform: translate(0, 0) scale(1); }
+    70%       { transform: translate(-2.4px, 0) scale(1); }
+    74%       { transform: translate(2.4px, 0) scale(1); }
+    78%, 100% { transform: translate(0, 0) scale(1); }
+  }
+  .brows { animation: browUp 30s ease-in-out infinite; }
+  @keyframes browUp {
+    0%, 46%   { transform: translateY(0); }
+    49%, 56%  { transform: translateY(-2.6px); }
+    59%, 100% { transform: translateY(0); }
   }
   .eye-blink { transform-box: fill-box; transform-origin: center; animation: blink 4.2s infinite; }
   @keyframes blink { 0%, 92%, 100% { transform: scaleY(1); } 95% { transform: scaleY(0.08); } }
-  .arm-r { transform-box: fill-box; transform-origin: 50% 10%; animation: wave 26s ease-in-out infinite; }
-  @keyframes wave {
-    0%, 43%   { transform: rotate(0deg); }
-    46%       { transform: rotate(-150deg); }
-    50%       { transform: rotate(-118deg); }
-    54%       { transform: rotate(-150deg); }
+  .arm-r { transform-box: fill-box; transform-origin: 50% 10%; animation: tapKnock 30s ease-in-out infinite; }
+  @keyframes tapKnock {
+    0%, 36%   { transform: rotate(0deg); }
+    38%       { transform: rotate(-150deg); }
+    40%       { transform: rotate(-118deg); }
+    42%       { transform: rotate(-150deg); }
+    44%       { transform: rotate(0deg); }
+    46%, 48%  { transform: rotate(-162deg); }
+    49.5%     { transform: rotate(-138deg); }
+    51%       { transform: rotate(-162deg); }
+    53.5%     { transform: rotate(-138deg); }
+    55%       { transform: rotate(-162deg); }
     58%, 100% { transform: rotate(0deg); }
   }
   .steth { transform-box: fill-box; transform-origin: 50% 0%; animation: sway 3.4s ease-in-out infinite; }
   @keyframes sway { 0%,100% { transform: rotate(-4deg); } 50% { transform: rotate(4deg); } }
 
-  /* तपासणी भिंग — lean वेळी हातात दिसते */
-  .mag {
-    position: absolute; top: 88px; left: 74px; font-size: 26px; opacity: 0;
-    animation: magPop 26s ease-in-out infinite;
-  }
+  .mag { position: absolute; top: 88px; left: 74px; font-size: 26px; opacity: 0;
+    animation: magPop 30s ease-in-out infinite; }
   @keyframes magPop {
-    0%, 22%   { opacity: 0; transform: scale(.5) rotate(-20deg); }
-    26%, 30%  { opacity: 1; transform: scale(1) rotate(8deg); }
-    34%, 46%  { opacity: 0; transform: scale(.5) rotate(-20deg); }
-    50%, 54%  { opacity: 1; transform: scale(1) rotate(8deg); }
-    58%, 100% { opacity: 0; transform: scale(.5) rotate(-20deg); }
+    0%, 20%   { opacity: 0; transform: scale(.5) rotate(-20deg); }
+    23%, 27%  { opacity: 1; transform: scale(1) rotate(8deg); }
+    30%, 39%  { opacity: 0; transform: scale(.5) rotate(-20deg); }
+    42%, 44%  { opacity: 1; transform: scale(1) rotate(8deg); }
+    47%, 100% { opacity: 0; transform: scale(.5) rotate(-20deg); }
   }
 
-  /* ===== Login card (real app सारखी) ===== */
-  .card-wrap { position: relative; }
+  /* ===== Login card ===== */
+  .card-wrap { position: relative; perspective: 1000px; }
   .login-card {
     position: relative; z-index: 5;
     background: rgba(18,40,63,.92); border: 1px solid rgba(255,255,255,.15);
     border-radius: 24px; padding: 24px; backdrop-filter: blur(20px);
     box-shadow: 0 20px 50px rgba(0,0,0,.45);
+    animation: cardReact 30s ease-in-out infinite;
+  }
+  @keyframes cardReact {
+    0%, 44%   { transform: rotateX(0deg) scale(1); }
+    50%, 56%  { transform: rotateX(2.5deg) scale(.985); }
+    62%, 100% { transform: rotateX(0deg) scale(1); }
   }
   .logo { text-align: center; margin-bottom: 18px; }
   .logo-mark {
@@ -134,7 +197,7 @@
     background: rgba(255,255,255,.1); padding: 10px 12px 10px 36px; color: #fff; font-size: 14px; outline: none;
   }
   .fld input::placeholder { color: #64748b; }
-  .fld .wrap { position: relative; } .fld .wrap i { position: absolute; left: 11px; top: 11px; font-size: 15px; opacity: .7; }
+  .fld .wrap { position: relative; } .fld .wrap i { position: absolute; left: 11px; top: 11px; font-size: 15px; opacity: .7; font-style: normal; }
   .btn {
     width: 100%; border: none; cursor: pointer; border-radius: 12px; padding: 12px;
     font-size: 15px; font-weight: 800; color: #0b1f33; font-family: inherit;
@@ -142,9 +205,7 @@
   }
   .foot { text-align: center; font-size: 12px; color: #64748b; margin-top: 14px; }
 
-  .note {
-    position: relative; z-index: 1; max-width: 400px; margin: 18px auto 30px; padding: 0 16px;
-  }
+  .note { position: relative; z-index: 1; max-width: 400px; margin: 18px auto 30px; padding: 0 16px; }
   .note div {
     background: #1a4a72; border-radius: 14px; padding: 12px 14px;
     font-size: 12.5px; font-weight: 600; text-align: center; line-height: 1.7; color: #e2e8f0;
@@ -154,68 +215,94 @@
 </head>
 <body>
   <div class="bg-fx" aria-hidden="true"><i></i><i></i><i></i></div>
+  <span class="dust" style="width:9px;height:9px;top:18%;animation-duration:26s;"></span>
+  <span class="dust" style="width:6px;height:6px;top:55%;animation-duration:34s;animation-delay:-12s;"></span>
+  <span class="dust" style="width:12px;height:12px;top:74%;animation-duration:30s;animation-delay:-20s;"></span>
+  <span class="dust" style="width:5px;height:5px;top:38%;animation-duration:38s;animation-delay:-6s;"></span>
+  <div class="glass" aria-hidden="true"></div>
 
   <div class="stage">
-    <!-- ===== Animated Doctor ===== -->
-    <div class="doc-move" aria-hidden="true">
-      <div class="doc-bob">
-        <div class="mag">🔍</div>
-        <svg viewBox="0 0 120 168" width="108" height="151">
-          <!-- पाय -->
-          <rect x="42" y="126" width="14" height="26" rx="6" fill="#1e3a5f"/>
-          <rect x="64" y="126" width="14" height="26" rx="6" fill="#1e3a5f"/>
-          <ellipse cx="47" cy="157" rx="11" ry="5" fill="#0a1a2e"/>
-          <ellipse cx="73" cy="157" rx="11" ry="5" fill="#0a1a2e"/>
-          <!-- कोट -->
-          <path d="M38 62 Q60 52 82 62 L88 132 Q60 142 32 132 Z" fill="#ffffff" stroke="#d7e5f2" stroke-width="2"/>
-          <line x1="60" y1="68" x2="60" y2="134" stroke="#d7e5f2" stroke-width="2"/>
-          <path d="M52 60 L60 79 L68 60 Z" fill="#0d9488"/>
-          <!-- डावा हात -->
-          <rect x="25" y="64" width="14" height="50" rx="7" fill="#f2f8fd" stroke="#d7e5f2" stroke-width="2"/>
-          <circle cx="32" cy="117" r="7" fill="#f6c89f"/>
-          <!-- उजवा हात (हलणारा) -->
-          <g class="arm-r">
-            <rect x="81" y="64" width="14" height="50" rx="7" fill="#f2f8fd" stroke="#d7e5f2" stroke-width="2"/>
-            <circle cx="88" cy="117" r="7" fill="#f6c89f"/>
-          </g>
-          <!-- स्टेथोस्कोप -->
-          <g class="steth">
-            <g stroke="#12324f" stroke-width="3.5" fill="none" stroke-linecap="round">
-              <path d="M50 58 C48 78 44 92 40 100"/>
-              <path d="M70 58 C72 78 76 92 80 100"/>
-              <path d="M40 100 C44 112 52 116 60 116 C68 116 76 112 80 100"/>
-            </g>
-            <circle cx="60" cy="118" r="7" fill="#0d9488" stroke="#12324f" stroke-width="2.5"/>
-            <circle cx="60" cy="118" r="2.4" fill="#e6fffa"/>
-          </g>
-          <!-- डोके -->
-          <g class="doc-head">
-            <circle cx="39" cy="37" r="4" fill="#f6c89f"/>
-            <circle cx="81" cy="37" r="4" fill="#f6c89f"/>
-            <circle cx="60" cy="35" r="21" fill="#f6c89f"/>
-            <path d="M39 27 Q40 8 60 8 Q80 8 81 27 Q70 21 60 21 Q50 21 39 27 Z" fill="#ffffff" stroke="#d7e5f2" stroke-width="2"/>
-            <rect x="39" y="22.5" width="42" height="7" rx="3.5" fill="#0d9488"/>
-            <rect x="57" y="11" width="6" height="10" rx="1.5" fill="#0d9488"/>
-            <rect x="55" y="13" width="10" height="6" rx="1.5" fill="#0d9488"/>
-            <g class="eye-blink">
-              <ellipse cx="52" cy="39" rx="5" ry="6" fill="#ffffff"/>
-              <circle class="pupil" cx="52" cy="40" r="2.6" fill="#1b2a3a"/>
-            </g>
-            <g class="eye-blink">
-              <ellipse cx="68" cy="39" rx="5" ry="6" fill="#ffffff"/>
-              <circle class="pupil" cx="68" cy="40" r="2.6" fill="#1b2a3a"/>
-            </g>
-            <path d="M46 30 L58 30" stroke="#8a5a2b" stroke-width="2.4" stroke-linecap="round"/>
-            <path d="M62 30 L74 30" stroke="#8a5a2b" stroke-width="2.4" stroke-linecap="round"/>
-            <path d="M52 49 Q60 55 68 49" stroke="#7c4a1e" stroke-width="2.4" fill="none" stroke-linecap="round"/>
-            <circle cx="45" cy="46" r="3.4" fill="#f0a080" opacity="0.55"/>
-            <circle cx="75" cy="46" r="3.4" fill="#f0a080" opacity="0.55"/>
-          </g>
-        </svg>
-      </div>
-    </div>
-
     <div class="card-wrap">
+      <!-- ===== 3D Doctor ===== -->
+      <div class="doc-move" aria-hidden="true">
+        <div class="doc-shadow"></div>
+        <div class="doc-bob">
+          <div class="mag">🔍</div>
+          <svg viewBox="0 0 120 168" width="108" height="151">
+            <defs>
+              <radialGradient id="faceG" cx="38%" cy="30%" r="80%">
+                <stop offset="0%" stop-color="#ffe6c4"/>
+                <stop offset="60%" stop-color="#f6c89f"/>
+                <stop offset="100%" stop-color="#eaa972"/>
+              </radialGradient>
+              <linearGradient id="coatG" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#c9d9ea"/>
+                <stop offset="22%" stop-color="#ffffff"/>
+                <stop offset="78%" stop-color="#ffffff"/>
+                <stop offset="100%" stop-color="#c2d4e6"/>
+              </linearGradient>
+              <linearGradient id="capG" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#ffffff"/>
+                <stop offset="100%" stop-color="#d5e2ef"/>
+              </linearGradient>
+            </defs>
+            <rect x="42" y="126" width="14" height="26" rx="6" fill="#1e3a5f"/>
+            <rect x="64" y="126" width="14" height="26" rx="6" fill="#16294a"/>
+            <ellipse cx="47" cy="157" rx="11" ry="5" fill="#0a1a2e"/>
+            <ellipse cx="73" cy="157" rx="11" ry="5" fill="#0a1a2e"/>
+            <path d="M38 62 Q60 52 82 62 L88 132 Q60 142 32 132 Z" fill="url(#coatG)" stroke="#b9cde2" stroke-width="2"/>
+            <path d="M44 70 Q42 100 40 126" stroke="#c3d4e6" stroke-width="2" fill="none" opacity=".7"/>
+            <path d="M76 70 Q78 100 80 126" stroke="#c3d4e6" stroke-width="2" fill="none" opacity=".7"/>
+            <line x1="60" y1="68" x2="60" y2="134" stroke="#c3d4e6" stroke-width="2"/>
+            <path d="M52 60 L60 79 L68 60 Z" fill="#0d9488"/>
+            <rect x="25" y="64" width="14" height="50" rx="7" fill="#eef5fb" stroke="#b9cde2" stroke-width="2"/>
+            <circle cx="32" cy="117" r="7" fill="url(#faceG)"/>
+            <g class="arm-r">
+              <rect x="81" y="64" width="14" height="50" rx="7" fill="#eef5fb" stroke="#b9cde2" stroke-width="2"/>
+              <circle cx="88" cy="117" r="7" fill="url(#faceG)"/>
+            </g>
+            <g class="steth">
+              <g stroke="#12324f" stroke-width="3.5" fill="none" stroke-linecap="round">
+                <path d="M50 58 C48 78 44 92 40 100"/>
+                <path d="M70 58 C72 78 76 92 80 100"/>
+                <path d="M40 100 C44 112 52 116 60 116 C68 116 76 112 80 100"/>
+              </g>
+              <circle cx="60" cy="118" r="7.5" fill="#0d9488" stroke="#12324f" stroke-width="2.5"/>
+              <circle cx="57.5" cy="115.5" r="2.2" fill="#bff3ec"/>
+            </g>
+            <g class="doc-head">
+              <circle cx="39" cy="37" r="4" fill="#eab887"/>
+              <circle cx="81" cy="37" r="4" fill="#eab887"/>
+              <circle cx="60" cy="35" r="21" fill="url(#faceG)"/>
+              <path d="M39 27 Q40 8 60 8 Q80 8 81 27 Q70 21 60 21 Q50 21 39 27 Z" fill="url(#capG)" stroke="#b9cde2" stroke-width="2"/>
+              <rect x="39" y="22.5" width="42" height="7" rx="3.5" fill="#0d9488"/>
+              <rect x="57" y="11" width="6" height="10" rx="1.5" fill="#0d9488"/>
+              <rect x="55" y="13" width="10" height="6" rx="1.5" fill="#0d9488"/>
+              <ellipse cx="60" cy="44" rx="3.4" ry="2.7" fill="#e5a06b"/>
+              <g class="eye-blink">
+                <ellipse cx="52" cy="39" rx="5" ry="6" fill="#ffffff"/>
+                <circle class="pupil" cx="52" cy="40" r="2.6" fill="#1b2a3a"/>
+                <circle class="pupil" cx="53" cy="39" r=".9" fill="#ffffff"/>
+              </g>
+              <g class="eye-blink">
+                <ellipse cx="68" cy="39" rx="5" ry="6" fill="#ffffff"/>
+                <circle class="pupil" cx="68" cy="40" r="2.6" fill="#1b2a3a"/>
+                <circle class="pupil" cx="69" cy="39" r=".9" fill="#ffffff"/>
+              </g>
+              <g class="brows" stroke="#8a5a2b" stroke-width="2.4" stroke-linecap="round">
+                <path d="M46 30 L58 30" fill="none"/>
+                <path d="M62 30 L74 30" fill="none"/>
+              </g>
+              <path d="M52 50 Q60 56 68 50" stroke="#7c4a1e" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+              <circle cx="45" cy="47" r="3.4" fill="#f0a080" opacity="0.55"/>
+              <circle cx="75" cy="47" r="3.4" fill="#f0a080" opacity="0.55"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+      <div class="ripple r1"></div>
+      <div class="ripple r2"></div>
+
       <div class="logo">
         <div class="logo-mark">
           <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#0b1f33" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
@@ -247,7 +334,7 @@
   </div>
 
   <div class="note">
-    <div>हा फक्त <b>preview</b> आहे — डॉक्टर लॉगिन कार्डच्या <b>मागून डोकावतो</b>, बाजूला येऊन उभा राहतो, <b>भिंग घेऊन तपासतो</b> 🔍 आणि हात हलवतो 👋<br>आवडल्यास सांगा, app च्या लॉगिन स्क्रीनवर टाकतो 🩺</div>
+    <div><b>3D प्रीव्यू</b> — डॉक्टर आता स्क्रीनच्या <b>आतून तुमच्याकडे येतो</b>, <b>काचेवर टॅप करतो</b> 👆 (ripple बघा), डोळे मोठे करून बघतो 👀<br>माझ्या ट्विक्स: चेहऱ्यावर 3D शेडिंग, अंतरानुसार सावली + blur, तरंगणारी धूळ, काचेचा reflection.<br>आवडल्यास सांगा, app च्या लॉगिन स्क्रीनवर टाकतो 🩺</div>
   </div>
 </body>
 </html>
